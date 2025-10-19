@@ -1,0 +1,14 @@
+/* src/components/Logo.module.css */
+.logoContainer {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.logoText {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-primary-dark, #007bff); /* Use a primary blue color */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

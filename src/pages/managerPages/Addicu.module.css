@@ -1,0 +1,102 @@
+/* src/pages/managerPages/Addicu.module.css */
+.cardContainer {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.title {
+  color: var(--color-primary-dark, #0056b3);
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.hospitalIdLabel {
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.formGroup input,
+.formGroup select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  border-color: var(--color-primary, #007bff);
+  outline: none;
+}
+
+.rowGroup {
+    display: flex;
+    gap: 20px;
+}
+
+.rowGroup .formGroup {
+    flex: 1;
+}
+
+/* Alert messages for success and error */
+.alert {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.alertSuccess {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alertError {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--color-success, #28a745);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #1e7e34;
+}
+
+.submitButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

@@ -1,0 +1,129 @@
+/* src/pages/adminPages/ViewAllHospital.module.css */
+.listContainer {
+  padding: 30px 20px;
+  background-color: var(--color-background-light, #f8f9fa);
+}
+
+.title {
+  color: var(--color-primary-dark, #0056b3);
+  margin-bottom: 20px;
+  font-size: 26px;
+  text-align: center;
+}
+
+.controls {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.searchInput {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+  transition: border-color 0.3s;
+}
+
+.searchInput:focus {
+  border-color: var(--color-primary, #007bff);
+  outline: none;
+}
+
+.hospitalTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden; /* Ensures shadows and borders look clean */
+}
+
+.hospitalTable th, .hospitalTable td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.hospitalTable th {
+  background-color: var(--color-primary-light, #e9ecef);
+  color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.star {
+  color: gold;
+  font-size: 1.1em;
+}
+
+/* Status Badges */
+.statusActive {
+  font-weight: 600;
+  color: #155724;
+  background-color: #d4edda;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.statusBlocked {
+  font-weight: 600;
+  color: #721c24;
+  background-color: #f8d7da;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* Action Buttons */
+.actionButtons button {
+  padding: 8px 12px;
+  margin-left: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btnBlock {
+  background-color: #ffc107; /* Warning yellow */
+  color: #343a40;
+}
+
+.btnBlock:hover {
+  background-color: #e0a800;
+}
+
+.btnUnblock {
+  background-color: #28a745; /* Success green */
+  color: white;
+}
+
+.btnUnblock:hover {
+  background-color: #1e7e34;
+}
+
+.btnDelete {
+  background-color: #dc3545; /* Danger red */
+  color: white;
+}
+
+.btnDelete:hover {
+  background-color: #bd2130;
+}
+
+.alertError {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.loading {
+    text-align: center;
+    padding: 30px;
+    font-size: 1.2em;
+    color: #007bff;
+}

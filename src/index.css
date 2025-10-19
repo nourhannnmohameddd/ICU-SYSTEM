@@ -1,0 +1,94 @@
+/* src/index.css */
+
+/* --- 1. CSS Variables (Color Palette) --- */
+:root {
+  /* Primary Brand Colors (Blue/Green for trust and urgency) */
+  --color-primary: #007bff; /* Main Blue */
+  --color-primary-dark: #0056b3;
+  --color-primary-light: #e0f7fa; 
+
+  /* Success/Available (ICU Status, Buttons) */
+  --color-success: #28a745; 
+  --color-success-light: #d4edda;
+
+  /* Warning/Attention (Block, Pending Tasks) */
+  --color-warning: #ffc107;
+  
+  /* Danger/Critical (Fees, Blocked Status) */
+  --color-danger: #dc3545; 
+
+  /* Backgrounds & Borders */
+  --color-background-light: #f8f9fa;
+  --color-background-white: #ffffff;
+  --color-border: #dee2e6;
+  --color-text-dark: #343a40;
+  --color-text-muted: #6c757d;
+}
+
+/* --- 2. Base Reset & Typography --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--color-background-light);
+  color: var(--color-text-dark);
+  line-height: 1.6;
+}
+
+/* Global H1, H2, H3 Styles for consistency */
+h1, h2, h3 {
+  color: var(--color-primary-dark);
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+/* --- 3. Global Reusable Element Styles (e.g., General Form & Table) --- */
+
+/* Global button reset */
+button, input[type="submit"] {
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+/* Global input styling */
+input[type="text"], 
+input[type="email"], 
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+textarea,
+select {
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+/* Global Table Styles */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+.data-table th, .data-table td {
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+}
+.data-table th {
+  background-color: #f0f4f7;
+  font-weight: 600;
+}

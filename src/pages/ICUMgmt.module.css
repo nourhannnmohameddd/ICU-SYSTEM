@@ -1,0 +1,94 @@
+/* src/pages/ICUMgmt.module.css */
+.container {
+    padding: 20px 0;
+}
+
+.title {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+.searchInput {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.icuTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.icuTable th, .icuTable td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.icuTable th {
+    background-color: #f0f4f7;
+    font-weight: 600;
+}
+
+/* Status Styling for Usability */
+.statusAVAILABLE {
+    font-weight: 600;
+    color: #28a745; /* Green */
+    background-color: #d4edda;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.statusOCCUPIED {
+    font-weight: 600;
+    color: #007bff; /* Blue */
+    background-color: #cce5ff;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.statusMAINTENANCE {
+    font-weight: 600;
+    color: #ffc107; /* Yellow */
+    background-color: #fff3cd;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.actions button {
+    padding: 8px 12px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btnUpdate {
+    background-color: var(--color-primary, #007bff);
+    color: white;
+}
+
+.btnUpdate:hover {
+    background-color: #0056b3;
+}
+
+.btnDelete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btnDelete:hover {
+    background-color: #bd2130;
+}
