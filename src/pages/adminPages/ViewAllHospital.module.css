@@ -74,42 +74,17 @@
   border-radius: 4px;
 }
 
-/* Action Buttons */
-.actionButtons button {
-  padding: 8px 12px;
-  margin-left: 5px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
+/* Action Buttons Container */
+.actionButtons {
+    display: flex;
+    gap: 8px; /* Add space between buttons */
 }
 
-.btnBlock {
-  background-color: #ffc107; /* Warning yellow */
-  color: #343a40;
-}
-
-.btnBlock:hover {
-  background-color: #e0a800;
-}
-
-.btnUnblock {
-  background-color: #28a745; /* Success green */
-  color: white;
-}
-
-.btnUnblock:hover {
-  background-color: #1e7e34;
-}
-
-.btnDelete {
-  background-color: #dc3545; /* Danger red */
-  color: white;
-}
-
-.btnDelete:hover {
-  background-color: #bd2130;
+/* Custom class to make buttons smaller for table rows */
+.actionBtn {
+    padding: 6px 10px;
+    font-size: 14px;
+    width: auto; /* Allow button to size to its content */
 }
 
 .alertError {

@@ -3,11 +3,12 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo.jsx';
 import styles from './Navigation.module.css';
-import { getRole, removeToken, removeRole } from '../utils/cookieUtils'; // Assuming cookieUtils
+import { useAuth } from '../contexts/AuthContext'; // 1. Import our new hook
 
 const Navigation = () => {
   const navigate = useNavigate();
-  const userRole = getRole(); // 'admin', 'manager', 'patient', etc.
+  // 2. Get everything we need from the context in one line
+  const { isAuthenticated, userRole, logout } = useAuth();
 
   // Define links based on user role
   const getDashboardLink = (role) => {
@@ -24,8 +25,7 @@ const Navigation = () => {
   };
 
   const handleLogout = () => {
-    removeToken();
-    removeRole();
+    logout(); // 3. Call the logout function from our context
     navigate('/login');
   };
 
@@ -40,7 +40,8 @@ const Navigation = () => {
             Find ICU
           </Link>
           
-          {userRole && (
+          {/* 4. Use 'isAuthenticated' instead of checking the role directly */}
+          {isAuthenticated && (
             <>
               {/* Link to the user's specific dashboard */}
               <Link to={getDashboardLink(userRole)} className={styles.navItem}>
@@ -52,7 +53,7 @@ const Navigation = () => {
             </>
           )}
 
-          {!userRole && (
+          {!isAuthenticated && (
             <>
               <Link to="/login" className={styles.navItem}>
                 Login

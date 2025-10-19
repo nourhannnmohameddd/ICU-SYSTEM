@@ -2,13 +2,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './LandingPage.module.css';
+import Button from '../components/Button'; // 1. Import Button
 
 const LandingPage = () => {
     const navigate = useNavigate();
 
     const handleFindIcuClick = () => {
         // Directs the user to the core ICU search functionality
-        navigate('/find-icu'); 
+        navigate('/find-icu');
     };
 
     return (
@@ -19,13 +20,15 @@ const LandingPage = () => {
             </header>
 
             <div className={styles.actionSection}>
-                <button 
-                    className={styles.primaryButton}
+                {/* 2. Replace the old button */}
+                <Button
                     onClick={handleFindIcuClick}
+                    variant="primary"
+                    className={styles.primaryButton} // Apply custom sizing
                 >
                     Find Nearest ICU Now
                     <i className="fas fa-search-location" style={{ marginLeft: '10px' }}></i>
-                </button>
+                </Button>
             </div>
 
             <section className={styles.featuresGrid}>

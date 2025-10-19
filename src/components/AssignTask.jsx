@@ -1,6 +1,6 @@
 // src/components/AssignTask.jsx
 import React, { useState } from 'react';
-// import { assignTask } from '../utils/api'; // API function
+import Button from './Button'; // 1. Import Button
 
 // employees: [{ id, name, role }]
 const AssignTask = ({ employees = [], onTaskAssigned }) => {
@@ -19,8 +19,6 @@ const AssignTask = ({ employees = [], onTaskAssigned }) => {
     setMessage('');
     
     try {
-      // 1. Call API: const result = await assignTask(formData);
-      
       // MOCK Success:
       const result = { success: true, task: { id: Date.now(), ...formData } }; 
 
@@ -58,7 +56,10 @@ const AssignTask = ({ employees = [], onTaskAssigned }) => {
       <label htmlFor="deadline">Deadline:</label>
       <input type="date" id="deadline" name="deadline" value={formData.deadline} onChange={handleChange} required />
       
-      <button type="submit" className="btn-primary">Assign Task</button>
+      {/* 2. Replace the old button */}
+      <Button type="submit" variant="primary">
+        Assign Task
+      </Button>
     </form>
   );
 };

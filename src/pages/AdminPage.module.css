@@ -84,22 +84,6 @@
     box-sizing: border-box;
 }
 
-.managerSubmitBtn {
-    width: 100%;
-    padding: 12px;
-    background-color: var(--color-success, #28a745);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.managerSubmitBtn:hover {
-    background-color: #1e7e34;
-}
-
 .alertSuccess {
     background-color: #d4edda;
     color: #155724;

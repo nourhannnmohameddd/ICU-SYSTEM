@@ -2,14 +2,15 @@
 import React, { useState } from 'react';
 import { registerICU } from '../../utils/api'; 
 import styles from './Addicu.module.css';
+import Button from '../../components/Button'; // 1. Import Button
 
 const Addicu = ({ hospitalId, onIcuRegistered }) => {
     const [formData, setFormData] = useState({
         roomNumber: '',
         specialization: 'General',
         capacity: 1,
-        initialStatus: 'AVAILABLE', // Default status upon creation
-        feeStructure: 500 // Base fee per day
+        initialStatus: 'AVAILABLE',
+        feeStructure: 500
     });
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -27,20 +28,11 @@ const Addicu = ({ hospitalId, onIcuRegistered }) => {
         setLoading(true);
 
         try {
-            const payload = {
-                ...formData,
-                hospitalId: hospitalId, // Manager's hospital ID
-                capacity: parseInt(formData.capacity)
-            };
+            const payload = { ...formData, hospitalId, capacity: parseInt(formData.capacity) };
+            const mockResponse = { data: { id: Date.now(), ...payload } }; // Mock response
             
-            // In a real app: const response = await registerICU(payload);
-            
-            // MOCK Success:
-            const mockResponse = { data: { id: Date.now(), ...payload } };
-
             setMessage({ type: 'success', text: `ICU Room ${payload.roomNumber} added successfully!` });
-            
-            onIcuRegistered(mockResponse.data); // Notify parent to update list
+            onIcuRegistered(mockResponse.data);
             setFormData({ roomNumber: '', specialization: 'General', capacity: 1, initialStatus: 'AVAILABLE', feeStructure: 500 });
 
         } catch (error) {
@@ -63,6 +55,7 @@ const Addicu = ({ hospitalId, onIcuRegistered }) => {
             )}
             
             <form onSubmit={handleSubmit} className={styles.form}>
+                {/* Input fields remain the same */}
                 <div className={styles.formGroup}>
                     <label htmlFor="roomNumber">Room Number/Identifier</label>
                     <input type="text" id="roomNumber" name="roomNumber" value={formData.roomNumber} onChange={handleChange} required disabled={loading} />
@@ -96,9 +89,10 @@ const Addicu = ({ hospitalId, onIcuRegistered }) => {
                     </select>
                 </div>
 
-                <button type="submit" className={styles.submitButton} disabled={loading}>
+                {/* 2. Replace the old button */}
+                <Button type="submit" variant="success" disabled={loading}>
                     {loading ? 'Registering...' : 'Register ICU'}
-                </button>
+                </Button>
             </form>
         </div>
     );

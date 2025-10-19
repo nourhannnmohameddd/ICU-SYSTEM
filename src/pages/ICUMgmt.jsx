@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { viewHospitalICUs, deleteICU } from '../utils/api';
 import styles from './ICUMgmt.module.css';
 import socket from '../utils/realtime';
+import Button from '../components/Button'; // 1. Import Button
 
 const ICUMgmt = ({ hospitalId }) => {
     const [icus, setIcus] = useState([]);
@@ -14,7 +15,6 @@ const ICUMgmt = ({ hospitalId }) => {
         const loadIcus = async () => {
             setLoading(true);
             try {
-                // In a real app: const response = await viewHospitalICUs(hospitalId);
                 const mockIcus = [
                     { id: 'icu01', room: '101', specialization: 'Cardiology', status: 'AVAILABLE', capacity: 1, fee: 600 },
                     { id: 'icu02', room: '102', specialization: 'Neurology', status: 'OCCUPIED', capacity: 1, fee: 800 },
@@ -30,7 +30,6 @@ const ICUMgmt = ({ hospitalId }) => {
 
         loadIcus();
         
-        // --- Socket Listener Setup ---
         socket.on('icuStatusUpdate', (update) => {
             setIcus(prev => prev.map(icu => 
                 icu.id === update.icuId ? { ...icu, status: update.newStatus } : icu
@@ -42,16 +41,9 @@ const ICUMgmt = ({ hospitalId }) => {
         };
     }, [hospitalId]);
 
-    // --- Handlers ---
     const handleStatusUpdate = (icuId, currentStatus) => {
-        // Simplistic UI to show update options
-        const newStatus = prompt(`Update status for ICU ${icuId}. Enter one: AVAILABLE, OCCUPIED, MAINTENANCE`, currentStatus);
-        
+        const newStatus = prompt(`Update status for ICU ${icuId}. Enter: AVAILABLE, OCCUPIED, or MAINTENANCE`, currentStatus);
         if (newStatus && ['AVAILABLE', 'OCCUPIED', 'MAINTENANCE'].includes(newStatus.toUpperCase())) {
-            // In a real app, this sends the update to the backend API, which then broadcasts via socket
-            // setIcuStatus(icuId, newStatus); 
-            
-            // Optimistic update
             setIcus(prev => prev.map(icu => 
                 icu.id === icuId ? { ...icu, status: newStatus.toUpperCase() } : icu
             ));
@@ -60,14 +52,8 @@ const ICUMgmt = ({ hospitalId }) => {
     
     const handleDelete = async (icuId) => {
         if (!window.confirm(`Are you sure you want to delete ICU ${icuId}?`)) return;
-        
-        try {
-            // await deleteICU(icuId); // API Call
-            setIcus(prev => prev.filter(icu => icu.id !== icuId));
-            alert('ICU deleted.');
-        } catch (error) {
-            alert('Failed to delete ICU.');
-        }
+        setIcus(prev => prev.filter(icu => icu.id !== icuId));
+        alert('ICU deleted.');
     };
 
     const filteredIcus = icus.filter(icu =>
@@ -113,12 +99,13 @@ const ICUMgmt = ({ hospitalId }) => {
                                     </span>
                                 </td>
                                 <td className={styles.actions}>
-                                    <button onClick={() => handleStatusUpdate(icu.id, icu.status)} className={styles.btnUpdate}>
-                                        Update Status
-                                    </button>
-                                    <button onClick={() => handleDelete(icu.id)} className={styles.btnDelete}>
+                                    {/* 2. Replace the old buttons */}
+                                    <Button onClick={() => handleStatusUpdate(icu.id, icu.status)} variant="primary" className={styles.actionBtn}>
+                                        Update
+                                    </Button>
+                                    <Button onClick={() => handleDelete(icu.id)} variant="danger" className={styles.actionBtn}>
                                         Delete
-                                    </button>
+                                    </Button>
                                 </td>
                             </tr>
                         ))}

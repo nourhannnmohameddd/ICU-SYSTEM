@@ -59,24 +59,11 @@
   color: #721c24;
 }
 
-.reserveBtn {
-  background-color: var(--color-success, #28a745);
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.2s;
-}
-
-.reserveBtn:hover:not(:disabled) {
-  background-color: #1e7e34;
-}
-
-.reserveBtn:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
+/* New helper class for sizing */
+.actionBtn {
+    padding: 6px 12px;
+    font-size: 14px;
+    width: auto;
 }
 
 .noResults {

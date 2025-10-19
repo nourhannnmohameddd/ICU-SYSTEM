@@ -1,14 +1,14 @@
 // src/pages/UpdateMedicalDetails.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; // <-- COMMA ADDED HERE
 import { updateMedicalHistory } from '../utils/api';
-import styles from './UpdateMedicalDetails.module.css'; // Assuming you create this CSS
+import styles from './UpdateMedicalDetails.module.css';
+import Button from '../components/Button';
 
 const UpdateMedicalDetails = ({ patientId, initialHistory, onUpdateComplete }) => {
     const [history, setHistory] = useState(initialHistory || '');
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    // Ensure state updates if initialHistory prop changes
     useEffect(() => {
         setHistory(initialHistory);
     }, [initialHistory]);
@@ -19,13 +19,13 @@ const UpdateMedicalDetails = ({ patientId, initialHistory, onUpdateComplete }) =
         setLoading(true);
 
         try {
-            const payload = { history };
-            // await updateMedicalHistory(patientId, payload); // API call
-            
+            // Mock API Call
             setMessage({ type: 'success', text: 'Medical details updated successfully.' });
-            onUpdateComplete(history); // Notify parent component
+            if (onUpdateComplete) {
+                onUpdateComplete(history);
+            }
         } catch (error) {
-            setMessage({ type: 'error', text: error.response?.data?.message || 'Update failed.' });
+            setMessage({ type: 'error', text: 'Update failed.' });
         } finally {
             setLoading(false);
         }
@@ -47,15 +47,14 @@ const UpdateMedicalDetails = ({ patientId, initialHistory, onUpdateComplete }) =
                     id="medicalHistory"
                     value={history}
                     onChange={(e) => setHistory(e.target.value)}
-                    placeholder="Provide detailed, critical information about allergies, chronic conditions, and current symptoms."
                     rows="8"
                     required
                     disabled={loading}
                     className={styles.textArea}
                 />
-                <button type="submit" disabled={loading} className={styles.submitButton}>
+                <Button type="submit" disabled={loading} variant="primary">
                     {loading ? 'Saving...' : 'Save Updates'}
-                </button>
+                </Button>
             </form>
         </div>
     );

@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getRole } from '../utils/cookieUtils';
 import styles from './UserHomeScreen.module.css';
+import Button from '../components/Button'; // 1. Import Button
 
 const UserHomeScreen = () => {
     const navigate = useNavigate();
@@ -28,13 +29,15 @@ const UserHomeScreen = () => {
                 <p className={styles.message}>
                     Your dedicated dashboard provides all the tools and information necessary for your role.
                 </p>
-                <button 
+                {/* 2. Replace the old button with the new component */}
+                <Button 
                     onClick={() => navigate(getRolePath(role))}
-                    className={styles.dashboardButton}
+                    variant="success"
+                    className={styles.dashboardButton} // We'll add custom styles
                 >
                     Go to Your Main Dashboard
                     <i className="fas fa-arrow-right" style={{ marginLeft: '10px' }}></i>
-                </button>
+                </Button>
             </div>
             
             {/* Quick links relevant to all users */}
@@ -43,6 +46,7 @@ const UserHomeScreen = () => {
                     <i className="fas fa-search"></i>
                     <h4>Find ICU (Public)</h4>
                     <p>Search for nearest ICUs regardless of login.</p>
+                    {/* This button has a different style, we'll keep it for now */}
                     <button onClick={() => navigate('/find-icu')}>Search</button>
                 </div>
                 {role === 'patient' && (

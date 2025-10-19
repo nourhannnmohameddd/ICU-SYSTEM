@@ -40,55 +40,24 @@
     font-weight: 600;
 }
 
-/* Status Styling for Usability */
-.statusAVAILABLE {
+.statusAVAILABLE, .statusOCCUPIED, .statusMAINTENANCE {
     font-weight: 600;
-    color: #28a745; /* Green */
-    background-color: #d4edda;
     padding: 4px 8px;
     border-radius: 4px;
 }
 
-.statusOCCUPIED {
-    font-weight: 600;
-    color: #007bff; /* Blue */
-    background-color: #cce5ff;
-    padding: 4px 8px;
-    border-radius: 4px;
+.statusAVAILABLE { color: #28a745; background-color: #d4edda; }
+.statusOCCUPIED { color: #007bff; background-color: #cce5ff; }
+.statusMAINTENANCE { color: #ffc107; background-color: #fff3cd; }
+
+.actions {
+    display: flex;
+    gap: 8px; /* Add space between buttons */
 }
 
-.statusMAINTENANCE {
-    font-weight: 600;
-    color: #ffc107; /* Yellow */
-    background-color: #fff3cd;
-    padding: 4px 8px;
-    border-radius: 4px;
-}
-
-.actions button {
-    padding: 8px 12px;
-    margin-right: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
-}
-
-.btnUpdate {
-    background-color: var(--color-primary, #007bff);
-    color: white;
-}
-
-.btnUpdate:hover {
-    background-color: #0056b3;
-}
-
-.btnDelete {
-    background-color: #dc3545;
-    color: white;
-}
-
-.btnDelete:hover {
-    background-color: #bd2130;
+/* Custom class to make buttons smaller for table rows */
+.actionBtn {
+    padding: 6px 12px;
+    font-size: 14px;
+    width: auto; /* Allow button to size to its content */
 }

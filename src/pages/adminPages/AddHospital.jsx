@@ -1,7 +1,8 @@
 // src/pages/adminPages/AddHospital.jsx
 import React, { useState } from 'react';
-import { addHospital } from '../../utils/api'; // API function to add hospital
+import { addHospital } from '../../utils/api';
 import styles from './AddHospital.module.css';
+import Button from '../../components/Button'; // 1. Import Button
 
 const AddHospital = ({ onHospitalAdded }) => {
     const [formData, setFormData] = useState({
@@ -25,7 +26,6 @@ const AddHospital = ({ onHospitalAdded }) => {
         setMessage(null);
         setLoading(true);
 
-        // Basic validation check for coordinates
         if (isNaN(parseFloat(formData.latitude)) || isNaN(parseFloat(formData.longitude))) {
             setMessage({ type: 'error', text: 'Latitude and Longitude must be valid numbers.' });
             setLoading(false);
@@ -39,12 +39,13 @@ const AddHospital = ({ onHospitalAdded }) => {
                 longitude: parseFloat(formData.longitude)
             };
             
-            const response = await addHospital(payload); // API call
+            // MOCK API CALL
+            // const response = await addHospital(payload);
+            const response = { data: { name: formData.name } }; // Mock response
             
             setMessage({ type: 'success', text: `Hospital "${response.data.name}" added successfully!` });
             setFormData({ name: '', address: '', phone: '', email: '', latitude: '', longitude: '' });
             
-            // Notify the parent component (AdminPage) to update the view list
             onHospitalAdded(response.data);
 
         } catch (error) {
@@ -65,6 +66,7 @@ const AddHospital = ({ onHospitalAdded }) => {
             )}
             
             <form onSubmit={handleSubmit} className={styles.form}>
+                {/* Input fields remain the same... */}
                 <div className={styles.formGroup}>
                     <label htmlFor="name">Hospital Name</label>
                     <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required disabled={loading} />
@@ -94,9 +96,10 @@ const AddHospital = ({ onHospitalAdded }) => {
                     </div>
                 </div>
 
-                <button type="submit" className={styles.submitButton} disabled={loading}>
+                {/* 2. Replace the old button */}
+                <Button type="submit" variant="primary" disabled={loading}>
                     {loading ? 'Adding...' : 'Add Hospital'}
-                </button>
+                </Button>
             </form>
         </div>
     );

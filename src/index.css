@@ -1,4 +1,4 @@
-/* src/index.css */
+/* src/index.css
 
 /* --- 1. CSS Variables (Color Palette) --- */
 :root {
@@ -14,7 +14,7 @@
   /* Warning/Attention (Block, Pending Tasks) */
   --color-warning: #ffc107;
   
-  /* Danger/Critical (Fees, Blocked Status) */
+ /* Danger/Critical (Fees, Blocked Status) */
   --color-danger: #dc3545; 
 
   /* Backgrounds & Borders */
@@ -25,7 +25,7 @@
   --color-text-muted: #6c757d;
 }
 
-/* --- 2. Base Reset & Typography --- */
+/* --- 2. Base Reset & Typography ---*/
 * {
   margin: 0;
   padding: 0;
@@ -49,7 +49,7 @@ h1, h2, h3 {
 
 /* --- 3. Global Reusable Element Styles (e.g., General Form & Table) --- */
 
-/* Global button reset */
+Global button reset 
 button, input[type="submit"] {
   cursor: pointer;
   border: none;

@@ -1,5 +1,6 @@
+// src/components/RemoveEmployee.jsx
 import React, { useState } from 'react';
-// import { deleteEmployee } from '../utils/api';
+import Button from './Button'; // 1. Import our Button component
 
 const RemoveEmployee = ({ onEmployeeAction }) => {
   const [identifier, setIdentifier] = useState('');
@@ -7,7 +8,7 @@ const RemoveEmployee = ({ onEmployeeAction }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (window.confirm(`Are you sure you want to remove employee: ${identifier}?`)) {
-        // 1. Call API: await deleteEmployee(identifier);
+        // In a real app: await deleteEmployee(identifier);
         onEmployeeAction(identifier, 'removed');
         setIdentifier('');
     }
@@ -23,8 +24,12 @@ const RemoveEmployee = ({ onEmployeeAction }) => {
         placeholder="Employee ID or Email" 
         required 
       />
-      <button type="submit" className="btn-danger">Remove Employee</button>
+      {/* 2. Replace the old button with our new component */}
+      <Button type="submit" variant="danger">
+        Remove Employee
+      </Button>
     </form>
   );
 };
+
 export default RemoveEmployee;

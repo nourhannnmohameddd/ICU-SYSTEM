@@ -27,20 +27,12 @@
     margin-bottom: 30px;
 }
 
+/* New style to override the default Button component's size */
 .dashboardButton {
-    background-color: var(--color-success, #28a745);
-    color: white;
-    border: none;
     padding: 15px 30px;
     font-size: 1.1em;
-    font-weight: 700;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.dashboardButton:hover {
-    background-color: #1e7e34;
+    max-width: 400px; /* Give it a max-width */
+    margin: 0 auto;   /* Center it */
 }
 
 /* Quick Actions Grid */

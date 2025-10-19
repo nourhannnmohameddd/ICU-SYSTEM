@@ -2,19 +2,19 @@
 import React, { useState, useEffect } from 'react';
 import { approveVacation } from '../utils/api';
 import styles from './VacationRequests.module.css';
+import Button from '../components/Button'; // 1. Import Button
 
 const VacationRequests = ({ hospitalId = 'HOSP_XYZ' }) => {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // MOCK DATA: Load requests for the manager's hospital
+    // MOCK DATA
     useEffect(() => {
         const loadRequests = async () => {
             setLoading(true);
             setError(null);
             try {
-                // In a real app: const response = await fetchVacationRequests(hospitalId); 
                 const mockRequests = [
                     { id: 'v001', employee: 'Nurse Karim Ali', role: 'Nurse', startDate: '2025-11-01', endDate: '2025-11-07', reason: 'Family event', status: 'PENDING' },
                     { id: 'v002', employee: 'Cleaner Ahmed', role: 'Cleaner', startDate: '2025-10-25', endDate: '2025-10-27', reason: 'Personal time', status: 'PENDING' },
@@ -31,21 +31,16 @@ const VacationRequests = ({ hospitalId = 'HOSP_XYZ' }) => {
     }, [hospitalId]);
 
     const handleApproval = async (requestId, decision) => {
-        const decisionText = decision.toUpperCase();
-        if (!window.confirm(`Are you sure you want to ${decisionText} request ID ${requestId}?`)) return;
+        if (!window.confirm(`Are you sure you want to ${decision.toUpperCase()} this request?`)) return;
 
         try {
-            // await approveVacation(requestId, decisionText); // API call
-            
-            // Optimistically update UI
+            // await approveVacation(requestId, decision);
             setRequests(prev => prev.map(req => 
-                req.id === requestId ? { ...req, status: decisionText } : req
+                req.id === requestId ? { ...req, status: decision.toUpperCase() } : req
             ));
-            alert(`Request ${requestId} ${decisionText} successfully.`);
-
+            alert(`Request ${requestId} has been ${decision}.`);
         } catch (err) {
             setError(`Failed to process request: ${err.message}`);
-            // If API fails, revert the state change here
         }
     };
 
@@ -82,8 +77,13 @@ const VacationRequests = ({ hospitalId = 'HOSP_XYZ' }) => {
                             <td className={styles.actionButtons}>
                                 {req.status === 'PENDING' ? (
                                     <>
-                                        <button onClick={() => handleApproval(req.id, 'Approved')} className={styles.btnApprove}>Approve</button>
-                                        <button onClick={() => handleApproval(req.id, 'Rejected')} className={styles.btnReject}>Reject</button>
+                                        {/* 2. Replace buttons */}
+                                        <Button onClick={() => handleApproval(req.id, 'Approved')} variant="success" className={styles.actionBtn}>
+                                            Approve
+                                        </Button>
+                                        <Button onClick={() => handleApproval(req.id, 'Rejected')} variant="secondary" className={styles.actionBtn}>
+                                            Reject
+                                        </Button>
                                     </>
                                 ) : (
                                     <span className={styles.statusCompleted}>{req.status}</span>

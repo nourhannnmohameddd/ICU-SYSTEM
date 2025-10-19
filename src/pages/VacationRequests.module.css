@@ -46,56 +46,37 @@
 }
 
 /* Status Badges for high usability */
-.statusPENDING {
+.statusPENDING, .statusAPPROVED, .statusREJECTED {
     font-weight: 700;
-    color: #ffc107; /* Yellow/Warning */
-    background-color: #fff3cd;
     padding: 4px 8px;
     border-radius: 4px;
+}
+
+.statusPENDING {
+    color: #856404; 
+    background-color: #fff3cd;
 }
 
 .statusAPPROVED {
-    font-weight: 700;
-    color: #28a745; /* Green/Success */
+    color: #155724;
     background-color: #d4edda;
-    padding: 4px 8px;
-    border-radius: 4px;
 }
 
 .statusREJECTED {
-    font-weight: 700;
-    color: #dc3545; /* Red/Danger */
+    color: #721c24;
     background-color: #f8d7da;
-    padding: 4px 8px;
-    border-radius: 4px;
 }
 
-.actionButtons button {
-    padding: 8px 12px;
-    margin-right: 8px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
+.actionButtons {
+    display: flex;
+    gap: 8px;
 }
 
-.btnApprove {
-    background-color: var(--color-success, #28a745);
-    color: white;
-}
-
-.btnApprove:hover {
-    background-color: #1e7e34;
-}
-
-.btnReject {
-    background-color: #6c757d; /* Gray */
-    color: white;
-}
-
-.btnReject:hover {
-    background-color: #5a6268;
+/* Custom class for sizing buttons in the table */
+.actionBtn {
+    padding: 6px 12px;
+    font-size: 14px;
+    width: auto; /* Allow button to fit its content */
 }
 
 .statusCompleted {

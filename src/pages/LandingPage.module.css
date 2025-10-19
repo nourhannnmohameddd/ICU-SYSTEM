@@ -28,21 +28,16 @@
     margin-bottom: 50px;
 }
 
+/* This class now only overrides the size and shadow, not the basic button styles */
 .primaryButton {
-    background-color: var(--color-primary, #007bff);
-    color: white;
-    border: none;
     padding: 18px 35px;
     font-size: 1.3em;
     font-weight: 700;
-    border-radius: 8px;
-    cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
-    transition: background-color 0.3s, transform 0.2s;
+    transition: transform 0.2s; /* Simplified transition */
 }
 
 .primaryButton:hover {
-    background-color: var(--color-primary-dark, #0056b3);
     transform: translateY(-2px);
 }
 

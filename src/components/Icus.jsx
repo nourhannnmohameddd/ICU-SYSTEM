@@ -1,17 +1,16 @@
 // src/components/Icus.jsx
 import React from 'react';
 import styles from './Icus.module.css';
+import Button from './Button'; // 1. Import Button
 
 // --- Sub-Component: ICUCard ---
 const ICUCard = ({ icu, onReserve }) => {
     const isAvailable = icu.status === 'AVAILABLE';
     const statusClass = isAvailable ? styles.statusAvailable : styles.statusReserved;
-    const specialClass = icu.specialization.toLowerCase().replace(/\s/g, '-');
 
     return (
-        <div className={`${styles.card} ${styles[specialClass]}`}>
+        <div className={styles.card}>
             <div className={styles.details}>
-                {/* Use the hospital name and specialization for clear identification */}
                 <h4 className={styles.cardTitle}>{icu.hospitalName} - {icu.specialization} ICU</h4>
                 <p>Room: {icu.roomNumber} | Location: {icu.locationDescription}</p>
             </div>
@@ -19,13 +18,15 @@ const ICUCard = ({ icu, onReserve }) => {
                 <span className={`${styles.status} ${statusClass}`}>
                     {icu.status}
                 </span>
-                <button
-                    className={styles.reserveBtn}
+                {/* 2. Replace the old button */}
+                <Button
                     onClick={() => onReserve(icu.id)}
                     disabled={!isAvailable}
+                    variant="success"
+                    className={styles.actionBtn}
                 >
-                    {isAvailable ? 'Reserve ICU' : 'Reserved'}
-                </button>
+                    {isAvailable ? 'Reserve' : 'Reserved'}
+                </Button>
             </div>
         </div>
     );
@@ -44,7 +45,6 @@ const Icus = ({ icuList = [], onReserve, loading }) => {
     return (
         <div className={styles.icuListContainer}>
             {icuList.map(icu => (
-                // Assuming each ICU object has id, hospitalName, specialization, status, locationDescription, roomNumber
                 <ICUCard key={icu.id} icu={icu} onReserve={onReserve} />
             ))}
         </div>
