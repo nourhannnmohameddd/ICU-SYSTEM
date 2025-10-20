@@ -4,65 +4,72 @@ import Cookies from 'js-cookie';
 const TOKEN_KEY = 'auth_token';
 const ROLE_KEY = 'user_role';
 
-// --- Token Management (Stored Securely in Cookies) ---
+// ============================================================
+//   TOKEN MANAGEMENT — stored in secure cookies
+// ============================================================
 
 /**
- * Stores the authentication token in a secure cookie.
- * @param {string} token - The JWT received from the backend upon login.
+ * Stores the authentication token securely in cookies.
+ * @param {string} token - JWT or mock token.
  */
 export const setToken = (token) => {
-    // Set cookie with security flags: expires (7 days), secure (HTTPS only), sameSite (CSRF protection)
-    Cookies.set(TOKEN_KEY, token, { 
-        expires: 7, 
-        secure: process.env.NODE_ENV === 'production', // Use secure in production
-        sameSite: 'Strict' 
-    });
+  Cookies.set(TOKEN_KEY, token, {
+    expires: 7, // valid for 7 days
+    secure: process.env.NODE_ENV === 'production', // only HTTPS in production
+    sameSite: 'Strict', // prevent CSRF
+  });
 };
 
 /**
  * Retrieves the stored authentication token.
- * @returns {string | undefined} The JWT token.
  */
-export const getToken = () => {
-    return Cookies.get(TOKEN_KEY);
-};
+export const getToken = () => Cookies.get(TOKEN_KEY);
 
 /**
  * Removes the authentication token.
  */
-export const removeToken = () => {
-    Cookies.remove(TOKEN_KEY);
-};
+export const removeToken = () => Cookies.remove(TOKEN_KEY);
 
-// --- Role Management (Stored in localStorage for quick access) ---
+// ============================================================
+//    ROLE MANAGEMENT — stored in localStorage
+// ============================================================
 
 /**
- * Stores the user's role (e.g., 'admin', 'patient').
- * @param {string} role - The user's role string.
+ * Stores the user's role (e.g., 'admin', 'doctor', etc.).
+ * @param {string} role
  */
 export const setRole = (role) => {
-    localStorage.setItem(ROLE_KEY, role);
+  localStorage.setItem(ROLE_KEY, role);
 };
 
 /**
- * Retrieves the user's role.
- * @returns {string | null} The user's role.
+ * Retrieves the user's stored role.
  */
-export const getRole = () => {
-    return localStorage.getItem(ROLE_KEY);
-};
+export const getRole = () => localStorage.getItem(ROLE_KEY);
 
 /**
- * Removes the user's role.
+ * Removes the stored user role.
  */
 export const removeRole = () => {
-    localStorage.removeItem(ROLE_KEY);
+  localStorage.removeItem(ROLE_KEY);
+};
+
+// ============================================================
+//    SESSION HELPERS
+// ============================================================
+
+/**
+ * Saves both token and role in one go (used after login).
+ */
+export const saveSession = (token, role) => {
+  setToken(token);
+  setRole(role);
 };
 
 /**
- * Clears all stored session data (used for logout).
+ * Clears all session data (used on logout).
  */
 export const clearSession = () => {
-    removeToken();
-    removeRole();
+  removeToken();
+  removeRole();
 };

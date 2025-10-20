@@ -3,105 +3,197 @@ import axios from 'axios';
 import { getToken, clearSession } from './cookieUtils';
 
 // ============================================================
-// ✅ Base URL for the backend API
-// Update 'localhost:3000' if your backend runs elsewhere
+//    MOCK BACKEND SETUP (using json-server)
 // ============================================================
+// Make sure your mock server runs with:
+// npx json-server --watch mockData.json --port 5000
+// ============================================================
+
 const API = axios.create({
-  baseURL: 'http://localhost:3000/api',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  timeout: 10000, // 10 seconds timeout
+  baseURL: 'http://localhost:5000', // ⬅️ Mock backend URL
+  headers: { 'Content-Type': 'application/json' },
+  timeout: 10000,
 });
 
 // ============================================================
-// ✅ Request Interceptor — attach JWT Token
+//   Request Interceptor — attach JWT Token (if any saved)
 // ============================================================
 API.interceptors.request.use(
   (config) => {
     const token = getToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => Promise.reject(error)
 );
 
 // ============================================================
-// ✅ Response Interceptor — handle 401 / 403 globally
+//    Response Interceptor — handle global errors
 // ============================================================
 API.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response ? error.response.status : null;
-
     if (status === 401) {
-      console.error('Unauthorized request. Clearing session.');
+      console.warn('Unauthorized - clearing session');
       clearSession();
-      // Optional: redirect to login if router available
     } else if (status === 403) {
-      console.error('Forbidden access. User not authorized.');
+      console.warn('Forbidden access');
     }
     return Promise.reject(error);
   }
 );
 
 // ============================================================
-// ✅ API FUNCTIONS
+//    MOCK AUTHENTICATION FUNCTIONS (for json-server)
 // ============================================================
 
-// --- 1. AUTHENTICATION ---
-export const loginUser = (credentials) => API.post('/auth/login', credentials);
-export const registerPatient = (userData) => API.post('/auth/register/patient', userData);
-
-// --- 2. PATIENT & ICU OPERATIONS ---
-export const fetchAvailableICUs = ({ lat, lng, specialization, searchTerm }) => {
-  return API.get('/icus/available', {
-    params: { lat, lng, specialization, search: searchTerm },
-  });
+/**
+ * Simulates a login by finding a matching user in mockData.json
+ * @param {Object} credentials - { email, password }
+ */
+export const loginUser = async ({ email, password }) => {
+  const res = await API.get(`/users?email=${email}&password=${password}`);
+  if (!res.data || res.data.length === 0) {
+    throw new Error('Invalid email or password');
+  }
+  const user = res.data[0];
+  // Simulate token
+  return {
+    data: {
+      token: 'mock-jwt-token',
+      role: user.role,
+      user,
+    },
+  };
 };
 
-export const reserveICU = (icuId, patientId) => API.post('/reservations/icu', { icuId, patientId });
-export const reserveVisitorsRoom = (details) => API.post('/reservations/visitor', details);
-export const updateMedicalHistory = (patientId, history) =>
-  API.put(`/patients/${patientId}/history`, history);
-export const rateDoctorAndHospital = (data) => API.post('/ratings', data);
+/**
+ * Simulates patient registration by adding user to mockData.json
+ * @param {Object} userData - { name, email, password }
+ */
+export const registerPatient = async (userData) => {
+  // Check if user already exists
+  const existing = await API.get(`/users?email=${userData.email}`);
+  if (existing.data.length > 0) {
+    throw new Error('User already exists');
+  }
 
-// --- 3. HOSPITAL MANAGEMENT (ADMIN/MANAGER) ---
-export const addHospital = (data) => API.post('/admin/hospitals', data);
-export const viewAllHospitals = () => API.get('/admin/hospitals');
-export const blockHospital = (hospitalId) => API.put(`/admin/hospitals/${hospitalId}/block`);
-export const viewHospitalRating = (hospitalId) => API.get(`/admin/hospitals/${hospitalId}/rating`);
+  const newUser = { ...userData, role: 'patient' };
+  const res = await API.post('/users', newUser);
+  return {
+    data: {
+      message: 'Patient registered successfully!',
+      user: res.data,
+    },
+  };
+};
 
-// ✅ NEW: Admin creates and assigns manager to a hospital
-export const createAndAssignManager = (managerData) =>
-  API.post('/admin/managers', managerData);
+// ============================================================
+//    MOCK PATIENT & ICU OPERATIONS (placeholders for now)
+// ============================================================
+export const fetchAvailableICUs = async () => {
+  console.log('Mock fetchAvailableICUs called');
+  return { data: [{ id: 1, name: 'ICU A', available: true }] };
+};
 
-// Manager operations
-export const registerICU = (icuData) => API.post('/manager/icus', icuData);
-export const viewHospitalICUs = (hospitalId) => API.get(`/manager/hospitals/${hospitalId}/icus`);
-export const deleteICU = (icuId) => API.delete(`/manager/icus/${icuId}`);
-export const addEmployee = (employeeData) => API.post('/manager/employees', employeeData);
-export const deleteEmployee = (employeeId) => API.delete(`/manager/employees/${employeeId}`);
-export const assignTask = (taskData) => API.post('/manager/tasks', taskData);
-export const trackEmployeeTasks = (employeeId) => API.get(`/manager/tasks/employee/${employeeId}`);
-export const registerKidsArea = (data) => API.post('/manager/kidsarea', data);
-export const approveVacation = (vacationId) => API.put(`/manager/vacations/${vacationId}/approve`);
+export const reserveICU = async (icuId, patientId) => {
+  console.log(`Mock reserveICU called with ICU ${icuId} for patient ${patientId}`);
+  return { data: { success: true, icuId, patientId } };
+};
 
-// --- 4. EMPLOYEE / DOCTOR / NURSE ACTIONS ---
-export const updateTaskStatus = (taskId, newStatus) =>
-  API.put(`/employee/tasks/${taskId}/status`, { newStatus });
+// ============================================================
+//    MOCK HOSPITAL MANAGEMENT (ADMIN/MANAGER) PLACEHOLDERS
+// ============================================================
+export const addHospital = async (data) => {
+  console.log('Mock addHospital', data);
+  return { data: { success: true } };
+};
 
-export const uploadHealthReport = (patientId, reportData) =>
-  API.post(`/nurse/patients/${patientId}/report`, reportData);
+export const viewAllHospitals = async () => {
+  console.log('Mock viewAllHospitals');
+  return { data: [] };
+};
 
-export const scheduleMedicines = (patientId, schedule) =>
-  API.post(`/doctor/patients/${patientId}/meds`, schedule);
+// ============================================================
+//    EMPLOYEE & VACATION MOCK ENDPOINTS
+// ============================================================
 
-// ✅ Added new requestVacation function (missing before)
-export const requestVacation = (vacationData) =>
-  API.post('/employee/vacations', vacationData);
+/**
+ * Employee submits a vacation request
+ */
+export const requestVacation = async (vacationData) => {
+  const res = await API.post('/vacationRequests', vacationData);
+  return res.data;
+};
 
-// Export API instance (optional use)
+/**
+ * Manager approves a vacation
+ */
+export const approveVacation = async (vacationId) => {
+  const res = await API.patch(`/vacationRequests/${vacationId}`, { approved: true });
+  return res.data;
+};
+
+
+
+// ============================================================
+// 🔧 TEMP MOCK PLACEHOLDERS for UI testing (not implemented yet)
+// ============================================================
+
+export const createAndAssignManager = async (managerData) => {
+  console.log('Mock createAndAssignManager called', managerData);
+  return { data: { success: true } };
+};
+
+export const scheduleMedicines = async (patientId, schedule) => {
+  console.log('Mock scheduleMedicines called', patientId, schedule);
+  return { data: { success: true } };
+};
+
+export const updateTaskStatus = async (taskId, newStatus) => {
+  console.log('Mock updateTaskStatus called', taskId, newStatus);
+  return { data: { success: true } };
+};
+
+export const viewHospitalICUs = async (hospitalId) => {
+  console.log('Mock viewHospitalICUs called', hospitalId);
+  return { data: [] };
+};
+
+export const deleteICU = async (icuId) => {
+  console.log('Mock deleteICU called', icuId);
+  return { data: { deleted: true } };
+};
+
+export const updateMedicalHistory = async (patientId, history) => {
+  console.log('Mock updateMedicalHistory called', patientId, history);
+  return { data: { success: true } };
+};
+
+export const reserveVisitorsRoom = async (details) => {
+  console.log('Mock reserveVisitorsRoom called', details);
+  return { data: { success: true } };
+};
+
+export const rateDoctorAndHospital = async (data) => {
+  console.log('Mock rateDoctorAndHospital called', data);
+  return { data: { success: true } };
+};
+
+export const blockHospital = async (hospitalId) => {
+  console.log('Mock blockHospital called', hospitalId);
+  return { data: { blocked: true } };
+};
+
+export const registerICU = async (icuData) => {
+  console.log('Mock registerICU called', icuData);
+  return { data: { success: true } };
+};
+
+
+// ============================================================
+//    EXPORTS
+// ============================================================
+
 export default API;
