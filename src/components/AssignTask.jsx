@@ -1,13 +1,14 @@
 // src/components/AssignTask.jsx
 import React, { useState } from 'react';
-import Button from './Button'; // 1. Import Button
+import { toast } from 'react-toastify'; // 1. Import toast
+import Button from './Button';
 
-// employees: [{ id, name, role }]
 const AssignTask = ({ employees = [], onTaskAssigned }) => {
   const [formData, setFormData] = useState({ 
     employeeId: '', description: '', priority: 'Medium', deadline: '' 
   });
-  const [message, setMessage] = useState('');
+  // 2. The 'message' state is no longer needed.
+  // const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,26 +17,28 @@ const AssignTask = ({ employees = [], onTaskAssigned }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
     
     try {
       // MOCK Success:
       const result = { success: true, task: { id: Date.now(), ...formData } }; 
 
       if (result.success) {
-        setMessage(`Task successfully assigned to Employee ID ${formData.employeeId}.`);
+        // 3. Show a success toast notification.
+        toast.success(`Task successfully assigned to Employee ID ${formData.employeeId}.`);
         onTaskAssigned(result.task); 
         setFormData({ employeeId: '', description: '', priority: 'Medium', deadline: '' });
       }
     } catch (error) {
-      setMessage(`Error assigning task: ${error.message}`);
+      // 4. Show an error toast notification.
+      toast.error(`Error assigning task: ${error.message}`);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="form-card">
       <h3>Assign Task</h3>
-      {message && <div className={message.includes('Error') ? 'alert-error' : 'alert-success'}>{message}</div>}
+      
+      {/* 5. The old message div is removed. */}
       
       <label htmlFor="employeeId">Assign To:</label>
       <select id="employeeId" name="employeeId" value={formData.employeeId} onChange={handleChange} required>
@@ -56,11 +59,11 @@ const AssignTask = ({ employees = [], onTaskAssigned }) => {
       <label htmlFor="deadline">Deadline:</label>
       <input type="date" id="deadline" name="deadline" value={formData.deadline} onChange={handleChange} required />
       
-      {/* 2. Replace the old button */}
       <Button type="submit" variant="primary">
         Assign Task
       </Button>
     </form>
   );
 };
+
 export default AssignTask;

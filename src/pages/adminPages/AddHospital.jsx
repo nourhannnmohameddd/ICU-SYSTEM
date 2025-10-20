@@ -1,8 +1,9 @@
 // src/pages/adminPages/AddHospital.jsx
 import React, { useState } from 'react';
+import { toast } from 'react-toastify'; // 1. Import toast
 import { addHospital } from '../../utils/api';
 import styles from './AddHospital.module.css';
-import Button from '../../components/Button'; // 1. Import Button
+import Button from '../../components/Button';
 
 const AddHospital = ({ onHospitalAdded }) => {
     const [formData, setFormData] = useState({
@@ -13,7 +14,8 @@ const AddHospital = ({ onHospitalAdded }) => {
         latitude: '',
         longitude: ''
     });
-    const [message, setMessage] = useState(null);
+    // 2. The 'message' state is no longer needed
+    // const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -23,11 +25,11 @@ const AddHospital = ({ onHospitalAdded }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setMessage(null);
         setLoading(true);
 
         if (isNaN(parseFloat(formData.latitude)) || isNaN(parseFloat(formData.longitude))) {
-            setMessage({ type: 'error', text: 'Latitude and Longitude must be valid numbers.' });
+            // 3. Use toast for validation errors
+            toast.error('Latitude and Longitude must be valid numbers.');
             setLoading(false);
             return;
         }
@@ -40,17 +42,19 @@ const AddHospital = ({ onHospitalAdded }) => {
             };
             
             // MOCK API CALL
-            // const response = await addHospital(payload);
-            const response = { data: { name: formData.name } }; // Mock response
+            const response = { data: { name: formData.name } };
             
-            setMessage({ type: 'success', text: `Hospital "${response.data.name}" added successfully!` });
+            // 4. Use toast for success message
+            toast.success(`Hospital "${response.data.name}" added successfully!`);
             setFormData({ name: '', address: '', phone: '', email: '', latitude: '', longitude: '' });
             
             onHospitalAdded(response.data);
 
         } catch (error) {
             console.error('Add Hospital Error:', error);
-            setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to add hospital. Server error.' });
+            const errorMessage = error.response?.data?.message || 'Failed to add hospital. Server error.';
+            // 5. Use toast for API errors
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -59,14 +63,9 @@ const AddHospital = ({ onHospitalAdded }) => {
     return (
         <div className={styles.cardContainer}>
             <h3 className={styles.title}>Register New Hospital</h3>
-            {message && (
-                <div className={`${styles.alert} ${message.type === 'error' ? styles.alertError : styles.alertSuccess}`}>
-                    {message.text}
-                </div>
-            )}
+            {/* 6. The old message display is removed from here */}
             
             <form onSubmit={handleSubmit} className={styles.form}>
-                {/* Input fields remain the same... */}
                 <div className={styles.formGroup}>
                     <label htmlFor="name">Hospital Name</label>
                     <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required disabled={loading} />
@@ -96,7 +95,6 @@ const AddHospital = ({ onHospitalAdded }) => {
                     </div>
                 </div>
 
-                {/* 2. Replace the old button */}
                 <Button type="submit" variant="primary" disabled={loading}>
                     {loading ? 'Adding...' : 'Add Hospital'}
                 </Button>
@@ -104,4 +102,5 @@ const AddHospital = ({ onHospitalAdded }) => {
         </div>
     );
 };
+
 export default AddHospital;

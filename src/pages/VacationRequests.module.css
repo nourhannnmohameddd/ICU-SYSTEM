@@ -72,11 +72,10 @@
     gap: 8px;
 }
 
-/* Custom class for sizing buttons in the table */
 .actionBtn {
     padding: 6px 12px;
     font-size: 14px;
-    width: auto; /* Allow button to fit its content */
+    width: auto;
 }
 
 .statusCompleted {
@@ -88,13 +87,4 @@
     text-align: center;
     padding: 40px;
     color: var(--color-primary, #007bff);
-}
-
-.alertError {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    font-weight: 600;
 }

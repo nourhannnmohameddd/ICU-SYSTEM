@@ -1,10 +1,11 @@
 // src/App.jsx
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify'; // <-- 1. IMPORT TOAST CONTAINER
+import 'react-toastify/dist/ReactToastify.css'; // <-- 2. IMPORT TOAST CSS
 
 // --- Global Components ---
 import Navigation from './components/Navigation.jsx'; 
-// Assuming you have a Footer component, which is good practice for usability
 // import Footer from './components/Footer.jsx'; 
 
 // --- Utilities & Security ---
@@ -20,36 +21,44 @@ import PatientHomePage from './pages/PatientHomePage.jsx';
 import ManagerDashboard from './pages/ManagerDashboard.jsx';
 import AdminPage from './pages/AdminPage.jsx';
 import DoctorPage from './pages/Doctor.jsx'; 
-import EmployeePage from './pages/EmployeeMgmt.jsx'; // Generic base for employees
+import EmployeePage from './pages/EmployeeMgmt.jsx';
 import PageNotFound from './pages/PageNotFound.jsx'; 
-
 
 const App = () => {
 
     useEffect(() => {
-        // --- Global Socket Connection Management ---
-        // Connect the socket when the application starts. Components (like ICUSelect) 
-        // will handle their specific listeners.
         if (!socket.connected) {
-             socket.connect(); 
+            socket.connect(); 
         }
         
         return () => {
-             // Clean up the global socket connection when the app component unmounts
-             if (socket.connected) {
+            if (socket.connected) {
                 socket.disconnect();
-             }
+            }
         };
     }, []);
 
     return (
         <div id="app-container">
+            {/* 3. ADD THE TOAST CONTAINER COMPONENT HERE */}
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+
             <Navigation />
             <main>
                 <Routes>
                     
                     {/* --- PUBLIC ROUTES --- */}
-                    {/* The root path is essential for resolving the 404 error */}
                     <Route path="/" element={<LandingPage />} /> 
                     <Route path="/find-icu" element={<ICUSelect />} />
                     <Route path="/login" element={<LoginForm />} />
@@ -95,8 +104,7 @@ const App = () => {
                         } 
                     />
 
-                    {/* --- EMPLOYEE ROLE ROUTES (Using Generic EmployeePage component) --- */}
-                    {/* The EmployeePage component receives the role via a prop for specialized content */}
+                    {/* --- EMPLOYEE ROLE ROUTES --- */}
                     <Route 
                         path="/nurse" 
                         element={

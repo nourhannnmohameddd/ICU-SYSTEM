@@ -1,37 +1,35 @@
 // src/pages/AdminPage.jsx
 import React, { useState } from 'react';
+import { toast } from 'react-toastify'; // 1. Import toast
 import DashBoardCard from '../components/DashBoardCard.jsx';
-import AddHospital from './adminPages/AddHospital.jsx'; // Imported from subfolder
-import ViewAllHospital from './adminPages/ViewAllHospital.jsx'; // Imported from subfolder
+import AddHospital from './adminPages/AddHospital.jsx';
+import ViewAllHospital from './adminPages/ViewAllHospital.jsx';
 import styles from './AdminPage.module.css';
 import { createAndAssignManager } from '../utils/api'; 
 
-// --- Icon Setup (Assume Font Awesome or similar is installed) ---
+// --- Icon Setup ---
 const iconHospital = <i className="fas fa-hospital-alt"></i>; 
 const iconManager = <i className="fas fa-user-tie"></i>;
 const iconRating = <i className="fas fa-star-half-alt"></i>; 
 
 const AdminPage = () => {
-    // State to handle which content tab is visible
     const [activeTab, setActiveTab] = useState('viewHospitals'); 
-    // State to force a reload in the hospital list when a new hospital is added
     const [hospitalUpdateKey, setHospitalUpdateKey] = useState(0); 
     const [managerForm, setManagerForm] = useState({ name: '', email: '', password: '', hospitalId: '' });
-    const [managerMessage, setManagerMessage] = useState(null);
+    
+    // 2. The managerMessage state is no longer needed
+    // const [managerMessage, setManagerMessage] = useState(null);
 
-    // MOCK STATS: Fetch these from API in a real application
     const [dashboardStats, setDashboardStats] = useState({
         totalHospitals: 15,
         totalManagers: 8,
         avgRating: 4.2
     });
     
-    // --- Handlers ---
     const handleHospitalAdded = (newHospitalData) => {
-        // Optimistically update stats and trigger ViewAllHospital reload
         setDashboardStats(prev => ({ ...prev, totalHospitals: prev.totalHospitals + 1 }));
         setHospitalUpdateKey(prev => prev + 1);
-        setActiveTab('viewHospitals'); // Switch back to view list
+        setActiveTab('viewHospitals');
     };
 
     const handleManagerChange = (e) => {
@@ -40,18 +38,22 @@ const AdminPage = () => {
 
     const handleManagerSubmit = async (e) => {
         e.preventDefault();
-        setManagerMessage(null);
         try {
-            // await createAndAssignManager(managerForm); // API call: create and assign managers
-            setManagerMessage({ type: 'success', text: `Manager ${managerForm.name} created and assigned successfully!` });
+            // await createAndAssignManager(managerForm); 
+            
+            // 3. Show a success toast
+            toast.success(`Manager ${managerForm.name} created and assigned successfully!`);
+            
             setDashboardStats(prev => ({ ...prev, totalManagers: prev.totalManagers + 1 }));
             setManagerForm({ name: '', email: '', password: '', hospitalId: '' });
         } catch (error) {
-            setManagerMessage({ type: 'error', text: error.response?.data?.message || 'Failed to assign manager.' });
+            const errorMessage = error.response?.data?.message || 'Failed to assign manager.';
+            
+            // 4. Show an error toast
+            toast.error(errorMessage);
         }
     };
     
-    // --- Content Renderer ---
     const renderContent = () => {
         switch (activeTab) {
             case 'addHospital':
@@ -60,7 +62,9 @@ const AdminPage = () => {
                 return (
                     <form onSubmit={handleManagerSubmit} className={`${styles.formCard}`}>
                         <h3 className={styles.formTitle}>Create & Assign Manager</h3>
-                        {managerMessage && <div className={managerMessage.type === 'error' ? styles.alertError : styles.alertSuccess}>{managerMessage.text}</div>}
+                        
+                        {/* 5. The old message div is removed from here */}
+
                         <input type="text" name="name" value={managerForm.name} onChange={handleManagerChange} placeholder="Name" required />
                         <input type="email" name="email" value={managerForm.email} onChange={handleManagerChange} placeholder="Email" required />
                         <input type="password" name="password" value={managerForm.password} onChange={handleManagerChange} placeholder="Initial Password" required />
@@ -70,7 +74,6 @@ const AdminPage = () => {
                 );
             case 'viewHospitals':
             default:
-                // Pass the key to force re-render when a new hospital is added
                 return <ViewAllHospital key={hospitalUpdateKey} />;
         }
     };
@@ -103,7 +106,7 @@ const AdminPage = () => {
                 />
             </section>
 
-            {/* Navigation Tabs (Usability focused) */}
+            {/* Navigation Tabs */}
             <nav className={styles.tabsNav}>
                 <button 
                     className={`${styles.tabButton} ${activeTab === 'viewHospitals' ? styles.active : ''}`}

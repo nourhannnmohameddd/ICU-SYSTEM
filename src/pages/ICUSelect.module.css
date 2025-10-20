@@ -48,10 +48,9 @@
     width: 250px;
 }
 
-/* Make the search button fit the height of the inputs */
 .controls button {
     width: auto;
-    height: 48px; /* Match padding + font size of inputs */
+    height: 48px; 
     padding: 0 25px;
 }
 
@@ -64,8 +63,8 @@
 
 .mapArea {
     position: sticky;
-    top: 20px; /* Makes the map stick to the top as you scroll */
-    height: calc(100vh - 120px); /* Adjust height as needed */
+    top: 20px;
+    height: calc(100vh - 120px);
 }
 
 .listArea h3 {
@@ -73,15 +72,6 @@
     margin-bottom: 15px;
 }
 
-.alertError {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    font-weight: 600;
-    text-align: center;
-}
 
 .loadingState {
     text-align: center;

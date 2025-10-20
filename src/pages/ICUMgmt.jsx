@@ -1,9 +1,10 @@
 // src/pages/ICUMgmt.jsx
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify'; // 1. Import toast
 import { viewHospitalICUs, deleteICU } from '../utils/api';
 import styles from './ICUMgmt.module.css';
 import socket from '../utils/realtime';
-import Button from '../components/Button'; // 1. Import Button
+import Button from '../components/Button';
 
 const ICUMgmt = ({ hospitalId }) => {
     const [icus, setIcus] = useState([]);
@@ -23,6 +24,7 @@ const ICUMgmt = ({ hospitalId }) => {
                 setIcus(mockIcus);
             } catch (error) {
                 console.error('Failed to load ICUs:', error);
+                toast.error('Failed to load ICUs.');
             } finally {
                 setLoading(false);
             }
@@ -41,19 +43,41 @@ const ICUMgmt = ({ hospitalId }) => {
         };
     }, [hospitalId]);
 
+    // 2. Replaced 'prompt' with a status cycle for better UX
     const handleStatusUpdate = (icuId, currentStatus) => {
-        const newStatus = prompt(`Update status for ICU ${icuId}. Enter: AVAILABLE, OCCUPIED, or MAINTENANCE`, currentStatus);
-        if (newStatus && ['AVAILABLE', 'OCCUPIED', 'MAINTENANCE'].includes(newStatus.toUpperCase())) {
-            setIcus(prev => prev.map(icu => 
-                icu.id === icuId ? { ...icu, status: newStatus.toUpperCase() } : icu
-            ));
-        }
+        const statuses = ['AVAILABLE', 'OCCUPIED', 'MAINTENANCE'];
+        const currentIndex = statuses.indexOf(currentStatus);
+        const nextIndex = (currentIndex + 1) % statuses.length; // Cycle to the next status
+        const newStatus = statuses[nextIndex];
+
+        setIcus(prev => prev.map(icu => 
+            icu.id === icuId ? { ...icu, status: newStatus } : icu
+        ));
+        
+        toast.info(`ICU ${icuId} status updated to ${newStatus}.`);
     };
     
-    const handleDelete = async (icuId) => {
-        if (!window.confirm(`Are you sure you want to delete ICU ${icuId}?`)) return;
-        setIcus(prev => prev.filter(icu => icu.id !== icuId));
-        alert('ICU deleted.');
+   
+    const handleDelete = (icuId) => {
+        const performDelete = () => {
+            setIcus(prev => prev.filter(icu => icu.id !== icuId));
+            toast.success(`ICU ${icuId} has been deleted.`);
+        };
+
+        const ConfirmationToast = ({ closeToast }) => (
+            <div>
+                <p>Are you sure you want to delete ICU {icuId}?</p>
+                <Button onClick={() => { performDelete(); closeToast(); }} variant="danger" style={{ marginRight: '10px' }}>Yes, Delete</Button>
+                <Button onClick={closeToast} variant="secondary">Cancel</Button>
+            </div>
+        );
+        
+        toast.warn(<ConfirmationToast />, {
+            position: "top-center",
+            autoClose: false,
+            closeOnClick: false,
+            draggable: false,
+        });
     };
 
     const filteredIcus = icus.filter(icu =>
@@ -99,7 +123,6 @@ const ICUMgmt = ({ hospitalId }) => {
                                     </span>
                                 </td>
                                 <td className={styles.actions}>
-                                    {/* 2. Replace the old buttons */}
                                     <Button onClick={() => handleStatusUpdate(icu.id, icu.status)} variant="primary" className={styles.actionBtn}>
                                         Update
                                     </Button>

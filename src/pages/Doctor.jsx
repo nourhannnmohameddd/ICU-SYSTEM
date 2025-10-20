@@ -1,8 +1,9 @@
 // src/pages/Doctor.jsx
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify'; // 1. Import toast
 import { scheduleMedicines } from '../utils/api';
 import styles from './Doctor.module.css';
-import Button from '../components/Button'; // 1. Import Button
+import Button from '../components/Button';
 
 const DoctorPage = () => {
     const [patients, setPatients] = useState([]);
@@ -12,17 +13,51 @@ const DoctorPage = () => {
     // MOCK DATA
     useEffect(() => {
         const mockPatients = [
-            { id: 'p001', name: 'Patient A (ICU 1A)', condition: 'Stable, monitoring vitals', room: '1A', medHistory: 'Allergies: Penicillin', medSchedule: [{ med: 'Ibuprofen', dose: '10mg', time: '8:00 AM' }] },
+            { id: 'p001', name: 'Patient A (ICU 1A)', condition: 'Stable, monitoring vitals', room: '1A', medHistory: 'Allergies: Penicillin', medSchedule: [{ med: 'Ibuprofen', dose: '10mg', time: '08:00' }] },
             { id: 'p002', name: 'Patient B (ICU 2C)', condition: 'Critical, requires monitoring', room: '2C', medHistory: 'Asthma, Diabetes', medSchedule: [] },
         ];
         setPatients(mockPatients);
         setLoading(false);
     }, []);
 
+    // 2. Updated handler for real-time UI and toast notifications
     const handleScheduleMeds = async (e) => {
         e.preventDefault();
-        // ... (handler logic remains the same)
-        alert(`Medicine scheduled for ${selectedPatient.name}.`);
+
+        // Get data directly from the form fields
+        const formData = new FormData(e.target);
+        const newMed = {
+            med: formData.get('med'),
+            dose: formData.get('dose'),
+            time: formData.get('time'),
+        };
+
+        // Update the state to reflect the change immediately
+        setPatients(currentPatients =>
+            currentPatients.map(patient => {
+                if (patient.id === selectedPatient.id) {
+                    // This is the patient to update. Return a new object.
+                    return {
+                        ...patient,
+                        medSchedule: [...patient.medSchedule, newMed],
+                    };
+                }
+                // This is not the patient we're looking for, return it unchanged.
+                return patient;
+            })
+        );
+        
+        // Also update the 'selectedPatient' state so the view refreshes if it's separate
+        setSelectedPatient(prev => ({
+             ...prev,
+             medSchedule: [...prev.medSchedule, newMed]
+        }));
+
+
+        // Show a success toast
+        toast.success(`Medicine scheduled for ${selectedPatient.name}.`);
+
+        // Reset the form for the next entry
         e.target.reset();
     };
 
@@ -66,7 +101,6 @@ const DoctorPage = () => {
                             <div className={styles.detailCard}>
                                 <h3 className={styles.subtitle}>Current Medicine Schedule</h3>
                                 <table className={styles.scheduleTable}>
-                                    {/* ... table content remains the same ... */}
                                     <thead>
                                         <tr>
                                             <th>Time</th>
@@ -95,7 +129,6 @@ const DoctorPage = () => {
                                 <input type="text" name="med" placeholder="Medicine Name" required />
                                 <input type="text" name="dose" placeholder="Dosage (e.g., 5mg)" required />
                                 <input type="time" name="time" required />
-                                {/* 2. Replace the old button */}
                                 <Button type="submit" variant="primary" className={styles.scheduleBtn}>
                                     Schedule
                                 </Button>

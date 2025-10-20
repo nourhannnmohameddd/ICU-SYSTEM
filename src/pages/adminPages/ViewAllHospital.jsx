@@ -1,8 +1,9 @@
 // src/pages/adminPages/ViewAllHospital.jsx
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify'; // 1. Import toast
 import { viewAllHospitals, blockHospital } from '../../utils/api';
 import styles from './ViewAllHospital.module.css';
-import Button from '../../components/Button'; // 1. Import Button
+import Button from '../../components/Button';
 
 const mockHospitals = [
     { id: 'h1', name: 'Al-Salam Hospital', rating: 4.8, isBlocked: false, manager: 'Mngr 1', icuCount: 15 },
@@ -11,23 +12,64 @@ const mockHospitals = [
 ];
 
 const ViewAllHospital = ({ newHospitalAdded }) => {
-    const [hospitals, setHospitals] = useState(mockHospitals);
+    const [hospitals, setHospitals] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    // 2. The 'error' state is no longer needed
+    // const [error, setError] = useState(null);
 
     useEffect(() => {
-        // ... (data fetching logic remains the same)
+        const fetchHospitals = async () => {
+            setLoading(true);
+            try {
+                // In a real app: const data = await viewAllHospitals();
+                // For now, we use the mock data.
+                setHospitals(mockHospitals);
+            } catch (err) {
+                // 3. Use toast for fetch errors
+                toast.error("Failed to load hospital data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchHospitals();
     }, [newHospitalAdded]);
     
+    // 4. Updated handler with toast and instant UI update
     const handleBlockToggle = async (hospitalId, currentStatus) => {
-        // ... (handler logic remains the same)
-        alert(`Hospital status updated.`);
+        const newStatus = !currentStatus;
+        try {
+            // await blockHospital(hospitalId, newStatus); // API call
+            setHospitals(prev => prev.map(h => 
+                h.id === hospitalId ? { ...h, isBlocked: newStatus } : h
+            ));
+            toast.success(`Hospital has been ${newStatus ? 'blocked' : 'unblocked'}.`);
+        } catch (err) {
+            toast.error('Failed to update hospital status.');
+        }
     };
     
+    // 5. Updated handler with confirmation toast and instant UI update
     const handleDelete = async (hospitalId) => {
-        // ... (handler logic remains the same)
-        alert('Hospital deleted successfully.');
+        const performDelete = () => {
+            setHospitals(prev => prev.filter(h => h.id !== hospitalId));
+            toast.success(`Hospital ${hospitalId} has been deleted.`);
+        };
+
+        const ConfirmationToast = ({ closeToast }) => (
+            <div>
+                <p>Are you sure you want to delete this hospital?</p>
+                <Button onClick={() => { performDelete(); closeToast(); }} variant="danger" style={{ marginRight: '10px' }}>Yes, Delete</Button>
+                <Button onClick={closeToast} variant="secondary">Cancel</Button>
+            </div>
+        );
+        
+        toast.warn(<ConfirmationToast />, {
+            position: "top-center",
+            autoClose: false,
+            closeOnClick: false,
+            draggable: false,
+        });
     };
 
     const filteredHospitals = hospitals.filter(h =>
@@ -39,7 +81,7 @@ const ViewAllHospital = ({ newHospitalAdded }) => {
         <div className={styles.listContainer}>
             <h3 className={styles.title}>All Registered Hospitals ({hospitals.length})</h3>
             
-            {error && <div className={styles.alertError}>{error}</div>}
+            {/* 6. Removed old error message div */}
 
             <div className={styles.controls}>
                 <input
@@ -78,7 +120,6 @@ const ViewAllHospital = ({ newHospitalAdded }) => {
                                     </span>
                                 </td>
                                 <td className={styles.actionButtons}>
-                                    {/* 2. Replace the old buttons */}
                                     <Button
                                         onClick={() => handleBlockToggle(hospital.id, hospital.isBlocked)}
                                         variant={hospital.isBlocked ? 'success' : 'secondary'}

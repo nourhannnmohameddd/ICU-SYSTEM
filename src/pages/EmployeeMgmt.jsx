@@ -1,8 +1,9 @@
 // src/pages/EmployeeMgmt.jsx
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify'; // 1. Import toast
 import { updateTaskStatus, requestVacation } from '../utils/api';
 import styles from './EmployeeMgmt.module.css'; 
-import Button from '../components/Button'; // 1. Import Button
+import Button from '../components/Button';
 
 const EmployeePage = ({ employeeRole = 'Employee' }) => {
     const [tasks, setTasks] = useState([]);
@@ -20,12 +21,13 @@ const EmployeePage = ({ employeeRole = 'Employee' }) => {
 
     const handleTaskStatusChange = async (taskId, currentStatus) => {
         const newStatus = currentStatus === 'PENDING' ? 'IN_PROGRESS' : 'DONE';
+        // Note: This optimistic update is great!
         setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: newStatus } : t));
     };
     
     const handleVacationRequest = async (e) => {
         e.preventDefault();
-        alert('Vacation request submitted successfully.');
+        toast.success('Vacation request submitted successfully.');
         setVacationForm({ start: '', end: '', reason: '' });
     };
 
@@ -41,7 +43,6 @@ const EmployeePage = ({ employeeRole = 'Employee' }) => {
                             <span>{task.description}</span>
                             <div className={styles.taskActions}>
                                 <span className={styles.statusBadge}>{task.status.replace('_', ' ')}</span>
-                                {/* 2. Replace button */}
                                 <Button 
                                     onClick={() => handleTaskStatusChange(task.id, task.status)}
                                     disabled={task.status === 'DONE'}
@@ -51,7 +52,7 @@ const EmployeePage = ({ employeeRole = 'Employee' }) => {
                                     {task.status === 'PENDING' ? 'Start' : task.status === 'IN_PROGRESS' ? 'Done' : 'Completed'}
                                 </Button>
                                 {task.category === 'Cleaner' && task.status === 'DONE' && (
-                                     <Button className={`${styles.actionBtn} ${styles.btnSterilize}`}>Mark Sterilized</Button>
+                                    <Button className={`${styles.actionBtn} ${styles.btnSterilize}`}>Mark Sterilized</Button>
                                 )}
                             </div>
                         </li>
@@ -63,7 +64,6 @@ const EmployeePage = ({ employeeRole = 'Employee' }) => {
                 <section className={styles.statusSection}>
                     <h2>Kids Area Status</h2>
                     <p className={styles.kidsStatus}>Occupancy: <strong>{kidsAreaStatus}</strong></p>
-                    {/* 2. Replace button */}
                     <Button className={styles.btnReserveSlot}>Reserve Time Slot</Button>
                 </section>
             )}
@@ -74,7 +74,6 @@ const EmployeePage = ({ employeeRole = 'Employee' }) => {
                     <input type="date" name="start" value={vacationForm.start} onChange={(e) => setVacationForm({...vacationForm, start: e.target.value})} required />
                     <input type="date" name="end" value={vacationForm.end} onChange={(e) => setVacationForm({...vacationForm, end: e.target.value})} required />
                     <textarea name="reason" value={vacationForm.reason} onChange={(e) => setVacationForm({...vacationForm, reason: e.target.value})} placeholder="Reason for leave" required />
-                    {/* 2. Replace button */}
                     <Button type="submit" variant="secondary">Submit Request</Button>
                 </form>
             </section>

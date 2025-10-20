@@ -1,8 +1,9 @@
 // src/pages/managerPages/Addicu.jsx
 import React, { useState } from 'react';
+import { toast } from 'react-toastify'; // 1. Import toast
 import { registerICU } from '../../utils/api'; 
 import styles from './Addicu.module.css';
-import Button from '../../components/Button'; // 1. Import Button
+import Button from '../../components/Button';
 
 const Addicu = ({ hospitalId, onIcuRegistered }) => {
     const [formData, setFormData] = useState({
@@ -12,7 +13,8 @@ const Addicu = ({ hospitalId, onIcuRegistered }) => {
         initialStatus: 'AVAILABLE',
         feeStructure: 500
     });
-    const [message, setMessage] = useState(null);
+    // 2. The 'message' state is no longer needed
+    // const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const specializations = ['General', 'Cardiology', 'Neurology', 'Pediatrics', 'Neonatal', 'Surgical'];
@@ -24,20 +26,22 @@ const Addicu = ({ hospitalId, onIcuRegistered }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setMessage(null);
         setLoading(true);
 
         try {
             const payload = { ...formData, hospitalId, capacity: parseInt(formData.capacity) };
             const mockResponse = { data: { id: Date.now(), ...payload } }; // Mock response
             
-            setMessage({ type: 'success', text: `ICU Room ${payload.roomNumber} added successfully!` });
+            // 3. Use toast for success message
+            toast.success(`ICU Room ${payload.roomNumber} added successfully!`);
             onIcuRegistered(mockResponse.data);
             setFormData({ roomNumber: '', specialization: 'General', capacity: 1, initialStatus: 'AVAILABLE', feeStructure: 500 });
 
         } catch (error) {
             console.error('Add ICU Error:', error);
-            setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to register ICU.' });
+            const errorMessage = error.response?.data?.message || 'Failed to register ICU.';
+            // 4. Use toast for error message
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -48,14 +52,9 @@ const Addicu = ({ hospitalId, onIcuRegistered }) => {
             <h3 className={styles.title}>Register New ICU</h3>
             <p className={styles.hospitalIdLabel}>Hospital ID: **{hospitalId}**</p>
 
-            {message && (
-                <div className={`${styles.alert} ${message.type === 'error' ? styles.alertError : styles.alertSuccess}`}>
-                    {message.text}
-                </div>
-            )}
+            {/* 5. The old message display is removed from here */}
             
             <form onSubmit={handleSubmit} className={styles.form}>
-                {/* Input fields remain the same */}
                 <div className={styles.formGroup}>
                     <label htmlFor="roomNumber">Room Number/Identifier</label>
                     <input type="text" id="roomNumber" name="roomNumber" value={formData.roomNumber} onChange={handleChange} required disabled={loading} />
@@ -89,7 +88,6 @@ const Addicu = ({ hospitalId, onIcuRegistered }) => {
                     </select>
                 </div>
 
-                {/* 2. Replace the old button */}
                 <Button type="submit" variant="success" disabled={loading}>
                     {loading ? 'Registering...' : 'Register ICU'}
                 </Button>
@@ -97,4 +95,5 @@ const Addicu = ({ hospitalId, onIcuRegistered }) => {
         </div>
     );
 };
+
 export default Addicu;

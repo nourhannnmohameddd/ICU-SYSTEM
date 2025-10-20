@@ -35,7 +35,7 @@
   background-color: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
-  overflow: hidden; /* Ensures shadows and borders look clean */
+  overflow: hidden;
 }
 
 .hospitalTable th, .hospitalTable td {
@@ -77,23 +77,14 @@
 /* Action Buttons Container */
 .actionButtons {
     display: flex;
-    gap: 8px; /* Add space between buttons */
+    gap: 8px;
 }
 
 /* Custom class to make buttons smaller for table rows */
 .actionBtn {
     padding: 6px 10px;
     font-size: 14px;
-    width: auto; /* Allow button to size to its content */
-}
-
-.alertError {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    font-weight: 600;
+    width: auto;
 }
 
 .loading {

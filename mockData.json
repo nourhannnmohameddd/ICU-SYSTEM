@@ -3,7 +3,7 @@
     { "id": 1, "name": "Dr. Ahmed", "email": "doctor@demo.com", "password": "1234", "role": "doctor" },
     { "id": 2, "name": "Admin User", "email": "admin@demo.com", "password": "1234", "role": "admin" },
     { "id": 3, "name": "Manager User", "email": "manager@demo.com", "password": "1234", "role": "manager" },
-    { "id": 4, "name": "Patient", "email": "patient@demo.com", "password": "1234", "role": "patient" }
+    { "id": 4, "name": "Patient", "email": "user@demo.com", "password": "1234", "role": "patient" }
   ],
   "vacationRequests": []
 }
