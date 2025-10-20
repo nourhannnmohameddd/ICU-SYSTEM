@@ -1,7 +1,7 @@
 // src/pages/EmployeeMgmt.jsx
 import React, { useState, useEffect } from 'react';
 import { updateTaskStatus, requestVacation } from '../utils/api';
-import styles from './EmployeeMggmt.module.css'; 
+import styles from './EmployeeMgmt.module.css'; 
 import Button from '../components/Button'; // 1. Import Button
 
 const EmployeePage = ({ employeeRole = 'Employee' }) => {
