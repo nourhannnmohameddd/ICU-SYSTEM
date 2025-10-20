@@ -1,23 +1,14 @@
-/* src/index.css
+/* src/index.css */
 
 /* --- 1. CSS Variables (Color Palette) --- */
 :root {
-  /* Primary Brand Colors (Blue/Green for trust and urgency) */
-  --color-primary: #007bff; /* Main Blue */
+  --color-primary: #007bff;
   --color-primary-dark: #0056b3;
-  --color-primary-light: #e0f7fa; 
-
-  /* Success/Available (ICU Status, Buttons) */
-  --color-success: #28a745; 
+  --color-primary-light: #e0f7fa;
+  --color-success: #28a745;
   --color-success-light: #d4edda;
-
-  /* Warning/Attention (Block, Pending Tasks) */
   --color-warning: #ffc107;
-  
- /* Danger/Critical (Fees, Blocked Status) */
-  --color-danger: #dc3545; 
-
-  /* Backgrounds & Borders */
+  --color-danger: #dc3545;
   --color-background-light: #f8f9fa;
   --color-background-white: #ffffff;
   --color-border: #dee2e6;
@@ -25,7 +16,7 @@
   --color-text-muted: #6c757d;
 }
 
-/* --- 2. Base Reset & Typography ---*/
+/* --- 2. Base Reset & Typography --- */
 * {
   margin: 0;
   padding: 0;
@@ -39,7 +30,6 @@ body {
   line-height: 1.6;
 }
 
-/* Global H1, H2, H3 Styles for consistency */
 h1, h2, h3 {
   color: var(--color-primary-dark);
   margin-top: 1.2em;
@@ -47,9 +37,9 @@ h1, h2, h3 {
   font-weight: 600;
 }
 
-/* --- 3. Global Reusable Element Styles (e.g., General Form & Table) --- */
+/* --- 3. Global Reusable Element Styles --- */
 
-Global button reset 
+/* Global button reset */
 button, input[type="submit"] {
   cursor: pointer;
   border: none;
