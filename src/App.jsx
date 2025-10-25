@@ -23,6 +23,7 @@ import AdminPage from './pages/AdminPage.jsx';
 import DoctorPage from './pages/Doctor.jsx'; 
 import EmployeePage from './pages/EmployeeMgmt.jsx';
 import PageNotFound from './pages/PageNotFound.jsx'; 
+import ReceptionistDashboard from './pages/ReceptionistDashboard.jsx'; // <-- 1. IMPORT THE NEW COMPONENT
 
 const App = () => {
 
@@ -117,7 +118,7 @@ const App = () => {
                         path="/receptionist" 
                         element={
                             <PrivateRoute allowedRoles={['receptionist']}>
-                                <EmployeePage employeeRole="Receptionist" />
+                                <ReceptionistDashboard />
                             </PrivateRoute>
                         } 
                     />

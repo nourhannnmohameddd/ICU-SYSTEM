@@ -102,6 +102,23 @@ export const reserveICU = async (icuId, patientId) => {
   return { data: { success: true, icuId, patientId } };
 };
 
+/**
+ * Fetches all reservations with a 'PENDING_ARRIVAL' status.
+ */
+export const fetchActiveReservations = async () => {
+  const res = await API.get(`/reservations?status=PENDING_ARRIVAL`);
+  return res;
+};
+
+/**
+ * Fetches all active ambulances.
+ */
+export const fetchActiveAmbulances = async () => {
+  const res = await API.get(`/ambulances`);
+  return res;
+};
+
+
 // ============================================================
 //    MOCK HOSPITAL MANAGEMENT (ADMIN/MANAGER) PLACEHOLDERS
 // ============================================================
@@ -112,9 +129,36 @@ export const addHospital = async (data) => {
 
 export const viewAllHospitals = async () => {
   console.log('Mock viewAllHospitals');
-  return { data: [] };
+  // For now, let's return the mock data directly here for testing AdminPage
+  return { data: [
+    { id: 'h1', name: 'Al-Salam Hospital', rating: 4.8, isBlocked: false, manager: 'Mngr 1', icuCount: 15 },
+    { id: 'h2', name: 'North Star Medical', rating: 3.5, isBlocked: true, manager: 'Mngr 2', icuCount: 8 },
+    { id: 'h3', name: 'General City Clinic', rating: 4.1, isBlocked: false, manager: 'Mngr 3', icuCount: 22 },
+  ] };
 };
 
+/**
+ * Fetches system-wide statistics (e.g., total ICUs, occupied count).
+ */
+export const fetchSystemStats = async () => {
+  console.log('Mock fetchSystemStats called');
+  // Simulate fetching all ICUs and calculating stats
+  const allIcus = [ // Example data - ideally fetched from backend
+      { status: 'OCCUPIED'}, { status: 'AVAILABLE' }, { status: 'MAINTENANCE' },
+      { status: 'AVAILABLE'}, { status: 'OCCUPIED' }, { status: 'AVAILABLE' },
+      { status: 'OCCUPIED'}, { status: 'AVAILABLE' }, { status: 'AVAILABLE' },
+  ];
+  const total = allIcus.length;
+  const occupied = allIcus.filter(icu => icu.status === 'OCCUPIED').length;
+  const available = allIcus.filter(icu => icu.status === 'AVAILABLE').length;
+  return { data: { totalIcus: total, occupiedIcus: occupied, availableIcus: available } };
+};
+export const fetchSystemLogs = async () => {
+  console.log('Mock fetchSystemLogs called');
+  // In real app, add query params for pagination/filtering
+  const res = await API.get(`/systemLogs?_sort=timestamp&_order=desc`); // Sort newest first
+  return res;
+};
 // ============================================================
 //    EMPLOYEE & VACATION MOCK ENDPOINTS
 // ============================================================
@@ -158,7 +202,14 @@ export const updateTaskStatus = async (taskId, newStatus) => {
 
 export const viewHospitalICUs = async (hospitalId) => {
   console.log('Mock viewHospitalICUs called', hospitalId);
-  return { data: [] };
+  // Let's make this return data based on our mockData.json
+  const allIcus = [
+      { id: 'icu01', hospitalId: 'HOSP_XYZ', room: '101', specialization: 'Cardiology', status: 'AVAILABLE', capacity: 1, fee: 600, patientId: null },
+      { id: 'icu02', hospitalId: 'HOSP_XYZ', room: '102', specialization: 'Neurology', status: 'OCCUPIED', capacity: 1, fee: 800, patientId: 'p_abc' },
+      { id: 'icu03', hospitalId: 'HOSP_XYZ', room: '103', specialization: 'General', status: 'MAINTENANCE', capacity: 2, fee: 500, patientId: null },
+      { id: 'icu04', hospitalId: 'HOSP_XYZ', room: '201', specialization: 'Pediatrics', status: 'AVAILABLE', capacity: 1, fee: 750, patientId: null }
+  ];
+  return { data: allIcus.filter(icu => icu.hospitalId === hospitalId) };
 };
 
 export const deleteICU = async (icuId) => {
