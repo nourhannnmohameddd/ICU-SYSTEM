@@ -15,15 +15,14 @@
     border-bottom: 3px solid #e0e0e0;
 }
 
-/* Dashboard Statistics Grid */
 .statsGrid {
     display: grid;
+    /* This automatically handles 4 items, so no change is needed here */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     margin-bottom: 40px;
 }
 
-/* Navigation Tabs */
 .tabsNav {
     display: flex;
     border-bottom: 2px solid #ddd;
@@ -41,6 +40,8 @@
     border-bottom: 3px solid transparent;
     transition: color 0.2s, border-bottom-color 0.2s;
     margin-right: 5px;
+    /* We add this to override the 100% width from the default Button style */
+    width: auto; 
 }
 
 .tabButton:hover {
@@ -52,12 +53,10 @@
     border-bottom-color: var(--color-primary, #007bff);
 }
 
-/* Content Area for Forms/Tables */
 .contentArea {
     padding: 20px 0;
 }
 
-/* Manager Assignment Form Styling */
 .formCard {
     background-color: white;
     padding: 30px;
@@ -82,4 +81,11 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
+}
+
+.employeeMgmtGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
 }

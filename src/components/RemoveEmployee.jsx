@@ -1,17 +1,44 @@
 // src/components/RemoveEmployee.jsx
 import React, { useState } from 'react';
-import Button from './Button'; // 1. Import our Button component
+import { toast } from 'react-toastify'; // 1. Import toast
+import Button from './Button';
 
 const RemoveEmployee = ({ onEmployeeAction }) => {
   const [identifier, setIdentifier] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (window.confirm(`Are you sure you want to remove employee: ${identifier}?`)) {
+    
+    // --- This is the new, improved confirmation logic ---
+    const performRemove = () => {
         // In a real app: await deleteEmployee(identifier);
         onEmployeeAction(identifier, 'removed');
+        toast.success(`Employee "${identifier}" has been removed.`);
         setIdentifier('');
-    }
+    };
+
+    const ConfirmationToast = ({ closeToast }) => (
+        <div>
+            <p>Are you sure you want to remove this employee?</p>
+            <p><strong>{identifier}</strong></p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '15px' }}>
+                <Button onClick={() => { performRemove(); closeToast(); }} variant="danger">
+                    Yes, Remove
+                </Button>
+                <Button onClick={closeToast} variant="secondary">
+                    Cancel
+                </Button>
+            </div>
+        </div>
+    );
+    
+    toast.warn(<ConfirmationToast />, {
+        position: "top-center",
+        autoClose: false,
+        closeOnClick: false,
+        draggable: false,
+    });
+    // --- End of new logic ---
   };
 
   return (
@@ -24,7 +51,6 @@ const RemoveEmployee = ({ onEmployeeAction }) => {
         placeholder="Employee ID or Email" 
         required 
       />
-      {/* 2. Replace the old button with our new component */}
       <Button type="submit" variant="danger">
         Remove Employee
       </Button>

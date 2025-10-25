@@ -1,9 +1,8 @@
-// src/pages/ManagerDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import DashBoardCard from '../components/DashBoardCard.jsx';
-import Addicu from './managerPages/Addicu.jsx'; 
-import EmployeeMgmt from './EmployeeMgmt.jsx'; 
-import VacationRequests from './VacationRequests.jsx'; 
+import Addicu from './managerPages/Addicu.jsx';
+import EmployeeMgmt from './EmployeeMgmt.jsx';
+import VacationRequests from './VacationRequests.jsx';
 import ICUMgmt from './ICUMgmt.jsx'; // Central ICU table management
 import styles from './ManagerDashboard.module.css';
 import navStyles from './AppNav.module.css'; // Using the AppNav.module.css we fixed
@@ -15,9 +14,9 @@ const iconVacation = <i className="fas fa-calendar-check"></i>;
 const iconEmployee = <i className="fas fa-user-friends"></i>;
 
 const ManagerDashboard = () => {
-    const [activeTab, setActiveTab] = useState('overview'); 
+    const [activeTab, setActiveTab] = useState('overview');
     const [hospitalInfo, setHospitalInfo] = useState({ id: 'HOSP_XYZ', name: 'General City Clinic' });
-    
+
     // MOCK DATA: Fetch these from API in a real application
     const [dashboardStats, setDashboardStats] = useState({
         totalICUs: 25,
@@ -29,13 +28,13 @@ const ManagerDashboard = () => {
     // --- Handlers ---
     const handleIcuRegistered = (newIcu) => {
         setDashboardStats(prev => ({ ...prev, totalICUs: prev.totalICUs + 1, availableICUs: prev.availableICUs + 1 }));
-        setActiveTab('icuMgmt'); 
+        setActiveTab('icuMgmt');
     };
 
     const renderContent = () => {
         switch (activeTab) {
             case 'icuMgmt':
-                return <ICUMgmt hospitalId={hospitalInfo.id} />; 
+                return <ICUMgmt hospitalId={hospitalInfo.id} />;
             case 'addIcu':
                 return <Addicu hospitalId={hospitalInfo.id} onIcuRegistered={handleIcuRegistered} />;
             case 'employeeMgmt':
@@ -60,7 +59,6 @@ const ManagerDashboard = () => {
                 );
         }
     };
-
     return (
         <div className={styles.managerDashboard}>
             <header className={styles.header}>
@@ -69,28 +67,28 @@ const ManagerDashboard = () => {
 
             {/* Statistics Grid */}
             <section className={styles.statsGrid}>
-                <DashBoardCard 
-                    title="Available ICUs" 
-                    value={dashboardStats.availableICUs} 
-                    icon={iconICU} 
+                <DashBoardCard
+                    title="Available ICUs"
+                    value={dashboardStats.availableICUs}
+                    icon={iconICU}
                     color="#28a745" // Green
                 />
-                <DashBoardCard 
-                    title="Total Employees" 
-                    value={dashboardStats.employeesOnShift} 
-                    icon={iconEmployee} 
+                <DashBoardCard
+                    title="Total Employees"
+                    value={dashboardStats.employeesOnShift}
+                    icon={iconEmployee}
                     color="#17a2b8" // Cyan
                 />
-                <DashBoardCard 
-                    title="Pending Vacations" 
-                    value={dashboardStats.pendingVacations} 
-                    icon={iconVacation} 
+                <DashBoardCard
+                    title="Pending Vacations"
+                    value={dashboardStats.pendingVacations}
+                    icon={iconVacation}
                     color="#ffc107" // Yellow
                 />
-                <DashBoardCard 
-                    title="Total ICUs" 
-                    value={dashboardStats.totalICUs} 
-                    icon={iconICU} 
+                <DashBoardCard
+                    title="Total ICUs"
+                    value={dashboardStats.totalICUs}
+                    icon={iconICU}
                     color="#007bff" // Blue
                 />
             </section>
@@ -111,5 +109,4 @@ const ManagerDashboard = () => {
         </div>
     );
 };
-
 export default ManagerDashboard;

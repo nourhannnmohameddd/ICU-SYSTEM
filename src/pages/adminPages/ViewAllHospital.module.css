@@ -52,12 +52,22 @@
   font-size: 14px;
 }
 
+/* New style for the clickable hospital name */
+.hospitalLink {
+  color: var(--color-primary, #007bff);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hospitalLink:hover {
+  text-decoration: underline;
+}
+
 .star {
   color: gold;
   font-size: 1.1em;
 }
 
-/* Status Badges */
 .statusActive {
   font-weight: 600;
   color: #155724;
@@ -74,22 +84,51 @@
   border-radius: 4px;
 }
 
-/* Action Buttons Container */
-.actionButtons {
-    display: flex;
-    gap: 8px;
-}
-
-/* Custom class to make buttons smaller for table rows */
-.actionBtn {
-    padding: 6px 10px;
-    font-size: 14px;
-    width: auto;
-}
-
 .loading {
     text-align: center;
     padding: 30px;
     font-size: 1.2em;
     color: #007bff;
+}
+
+/* --- New Modal Styles --- */
+.modalHeader {
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  color: var(--color-primary-dark);
+}
+
+.modalHeader p {
+  color: #6c757d;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.modalBody {
+  margin-bottom: 25px;
+}
+
+.modalBody p {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+/* Give buttons in the modal a specific width */
+.modalActions > button {
+  width: auto;
+  padding: 10px 20px;
 }

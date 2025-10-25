@@ -10,7 +10,20 @@
     text-align: center;
     border-bottom: 2px solid #e0e0e0;
     padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* --- NEW Tab Navigation Styles --- */
+.tabsNav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
     margin-bottom: 30px;
+}
+
+.tabsNav button {
+    width: auto; /* Allow buttons to fit content */
+    padding: 10px 25px;
 }
 
 .contentGrid {
@@ -33,31 +46,100 @@
     padding-bottom: 10px;
 }
 
-.list {
-    list-style: none;
-    padding: 0;
+/* --- NEW Patient Card Grid Styles --- */
+.patientCardGrid {
+    display: grid;
+    grid-template-columns: 1fr; /* One column of cards */
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.listItem {
+.patientCard {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
     padding: 10px;
-    margin-bottom: 5px;
-    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 15px;
-    border-left: 3px solid transparent;
+    transition: background-color 0.2s, border-left-width 0.2s;
+    border-left: 5px solid transparent;
 }
 
-.listItem:hover {
-    background-color: #f0f4f7;
+.patientCard:hover {
+    background-color: #e9ecef;
 }
 
-.listItem.active {
+.activeCard {
     background-color: var(--color-primary-light, #e0eaff);
     border-left-color: var(--color-primary, #007bff);
-    font-weight: 600;
 }
 
+.statusIndicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+/* Color coding for patient status */
+.statusStable { background-color: #28a745; } /* Green */
+.statusCritical { background-color: #dc3545; } /* Red */
+.statusMonitoring { background-color: #ffc107; } /* Yellow */
+
+.patientInfo {
+    flex-grow: 1;
+}
+
+.cardPatientName {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.cardPatientRoom {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* --- NEW Schedule Tab Styles --- */
+.scheduleContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.vacationSection, .appointmentsSection {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.vacationSection h2, .appointmentsSection h2 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.vacationForm {
+    display: grid;
+    gap: 15px;
+    margin-top: 20px;
+}
+.vacationForm input, .vacationForm textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.vacationForm textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* --- Details Panel Styles --- */
 .detailsPanel {
     background-color: white;
     padding: 30px;
@@ -131,7 +213,6 @@
     border-radius: 5px;
 }
 
-/* NEW simplified style for the schedule button */
 .scheduleBtn {
     padding: 10px 15px;
     font-weight: 600;
