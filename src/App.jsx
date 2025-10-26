@@ -11,7 +11,7 @@ import Navigation from './components/Navigation.jsx';
 // --- Utilities & Security ---
 import PrivateRoute from './pages/PrivateRoute.jsx';
 import socket from './socket';
-import { useAuth } from './contexts/AuthContext'; // <-- NEW: Import useAuth
+import { useAuth } from './contexts/AuthContext'; 
 
 // --- Import All Pages ---
 import LandingPage from './pages/LandingPage.jsx';
@@ -22,12 +22,18 @@ import PatientHomePage from './pages/PatientHomePage.jsx';
 import ManagerDashboard from './pages/ManagerDashboard.jsx';
 import AdminPage from './pages/AdminPage.jsx';
 import DoctorPage from './pages/Doctor.jsx';
-import EmployeePage from './pages/EmployeeMgmt.jsx';
+// REMOVED EmployeePage, but it's still used by ManagerDashboard
+import EmployeePage from './pages/EmployeeMgmt.jsx'; 
 import PageNotFound from './pages/PageNotFound.jsx';
 import ReceptionistDashboard from './pages/ReceptionistDashboard.jsx';
 
+// --- NEWLY IMPORTED DASHBOARDS ---
+import NurseDashboard from './pages/Nurse.jsx';
+import CleanerDashboard from './pages/Cleaner.jsx';
+import AmbulanceDashboard from './pages/Ambulance.jsx';
+
+
 const App = () => {
-    // <-- NEW: Get dark mode state from context
     const { isDarkMode } = useAuth();
 
     useEffect(() => {
@@ -42,15 +48,13 @@ const App = () => {
         };
     }, []);
 
-    // <-- NEW: Add useEffect to manage the body class
     useEffect(() => {
-        // Apply or remove the dark-mode class from the body
         if (isDarkMode) {
             document.body.classList.add('dark-mode');
         } else {
             document.body.classList.remove('dark-mode');
         }
-    }, [isDarkMode]); // Re-run whenever isDarkMode changes
+    }, [isDarkMode]);
 
     return (
         <div id="app-container">
@@ -116,12 +120,13 @@ const App = () => {
                         }
                     />
 
-                    {/* --- EMPLOYEE ROLE ROUTES --- */}
+                    {/* --- EMPLOYEE ROLE ROUTES (NOW SEPARATED) --- */}
                     <Route
                         path="/nurse"
                         element={
                             <PrivateRoute allowedRoles={['nurse']}>
-                                <EmployeePage employeeRole="Nurse" />
+                                {/* UPDATED to use new component */}
+                                <NurseDashboard />
                             </PrivateRoute>
                         }
                     />
@@ -137,7 +142,17 @@ const App = () => {
                         path="/cleaner"
                         element={
                             <PrivateRoute allowedRoles={['cleaner']}>
-                                <EmployeePage employeeRole="Cleaner" />
+                                {/* UPDATED to use new component */}
+                                <CleanerDashboard />
+                            </PrivateRoute>
+                        }
+                    />
+                    {/* NEW ROUTE for Ambulance */}
+                    <Route
+                        path="/ambulance"
+                        element={
+                            <PrivateRoute allowedRoles={['ambulance']}>
+                                <AmbulanceDashboard />
                             </PrivateRoute>
                         }
                     />
@@ -146,7 +161,6 @@ const App = () => {
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </main>
-            {/* <Footer /> */}
         </div>
     );
 };
