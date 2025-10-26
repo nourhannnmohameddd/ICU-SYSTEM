@@ -3,8 +3,10 @@
     padding: 30px;
     max-width: 1400px;
     margin: 0 auto;
+    /* Default light background */
     background-color: var(--color-background-light, #f4f6f9);
     min-height: 100vh;
+    transition: background-color 0.3s; /* Smooth transition */
 }
 
 .header h1 {
@@ -17,57 +19,69 @@
 
 .statsGrid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* Adjusted for potentially 4 cards */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     margin-bottom: 40px;
 }
 
 .contentArea {
     padding: 20px 0;
-    min-height: 500px; /* Ensure content area has a minimum height */
+    min-height: 400px; /* Adjusted height */
 }
 
 .overviewPanel {
-    background-color: white;
+    background-color: white; /* Default light card background */
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     text-align: center;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .sectionTitle {
-    color: #333;
+    color: #333; /* Default light text */
     font-size: 24px;
     margin-top: 0;
     margin-bottom: 15px;
+    transition: color 0.3s;
 }
 
-.quickActions {
-    margin-top: 30px;
-}
-
-.quickActions button {
-    background-color: var(--color-success, #28a745);
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    font-size: 16px;
-    font-weight: 700;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 0 10px;
-    transition: background-color 0.2s;
-}
-
-.quickActions button:hover {
-    background-color: #1e7e34;
-}
+/* Removed quickActions as tabs are used now */
 
 .sectionPlaceholder {
-    background-color: #fff3cd;
+    background-color: #fff3cd; /* Light warning background */
     border: 1px solid #ffc107;
     padding: 20px;
     border-radius: 5px;
     text-align: center;
-    color: #856404;
+    color: #856404; /* Dark warning text */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/* --- Dark Mode Specific Rules --- */
+body.dark-mode .managerDashboard {
+    background-color: var(--color-background-light); /* Uses dark background variable */
+    color: var(--color-text-dark); /* Uses light text variable */
+}
+
+body.dark-mode .managerDashboard .header h1,
+body.dark-mode .managerDashboard .sectionTitle {
+     color: var(--color-text-dark); /* Light headings in dark mode */
+}
+
+body.dark-mode .managerDashboard .header {
+    border-bottom-color: var(--color-border); /* Darker border */
+}
+
+body.dark-mode .managerDashboard .overviewPanel {
+    background-color: var(--color-background-white); /* Use dark card background */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Ensure placeholder text/background are visible in dark mode */
+body.dark-mode .managerDashboard .sectionPlaceholder {
+    background-color: #332701; /* Darker warning background */
+    border-color: #856404;
+    color: #ffc107; /* Lighter warning text */
 }
