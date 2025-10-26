@@ -3,8 +3,26 @@ import { getToken, getRole, removeToken, removeRole } from '../utils/cookieUtils
 
 const AuthContext = createContext(null);
 
+// <-- NEW: Helper function to get initial dark mode state from localStorage
+const getInitialDarkMode = () => {
+    const savedMode = localStorage.getItem('darkMode');
+    return savedMode ? JSON.parse(savedMode) : false;
+};
+
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState({ token: getToken(), role: getRole() });
+
+    // <-- NEW: Add dark mode state
+    const [isDarkMode, setIsDarkMode] = useState(getInitialDarkMode());
+
+    // <-- NEW: Add toggle function
+    const toggleDarkMode = () => {
+        setIsDarkMode(prevMode => {
+            const newMode = !prevMode;
+            localStorage.setItem('darkMode', JSON.stringify(newMode));
+            return newMode;
+        });
+    };
 
     const logout = () => {
         removeToken();
@@ -24,6 +42,8 @@ export const AuthProvider = ({ children }) => {
         userRole: user.role,
         logout,
         login, // Expose login function
+        isDarkMode,      // <-- NEW: Expose state
+        toggleDarkMode,  // <-- NEW: Expose function
     };
 
     return <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>;

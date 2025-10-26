@@ -1,16 +1,14 @@
 // src/components/Navigation.jsx
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Logo from './Logo.jsx';
-import styles from './Navigation.module.css';
-import { useAuth } from '../contexts/AuthContext'; // 1. Import our new hook
+import Logo from './Logo.jsx'; //
+import styles from './Navigation.module.css'; //
+import { useAuth } from '../contexts/AuthContext'; //
 
 const Navigation = () => {
   const navigate = useNavigate();
-  // 2. Get everything we need from the context in one line
-  const { isAuthenticated, userRole, logout } = useAuth();
+  const { isAuthenticated, userRole, logout, isDarkMode, toggleDarkMode } = useAuth();
 
-  // Define links based on user role
   const getDashboardLink = (role) => {
     switch (role) {
       case 'admin': return '/admin';
@@ -25,7 +23,7 @@ const Navigation = () => {
   };
 
   const handleLogout = () => {
-    logout(); // 3. Call the logout function from our context
+    logout();
     navigate('/login');
   };
 
@@ -36,17 +34,25 @@ const Navigation = () => {
           <Logo />
         </Link>
         <div className={styles.navLinks}>
+          <button
+              onClick={toggleDarkMode}
+              className={styles.navItem} // Keep navItem class for base styling
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', padding: '8px 12px' }}
+              title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            {isDarkMode ? '☀️' : '🌙'}
+          </button>
+
           <Link to="/find-icu" className={styles.navItem}>
             Find ICU
           </Link>
-          
-          {/* 4. Use 'isAuthenticated' instead of checking the role directly */}
+
           {isAuthenticated && (
             <>
-              {/* Link to the user's specific dashboard */}
               <Link to={getDashboardLink(userRole)} className={styles.navItem}>
                 {userRole.charAt(0).toUpperCase() + userRole.slice(1)} Dashboard
               </Link>
+              {/* Keep both classes applied */}
               <button onClick={handleLogout} className={`${styles.navItem} ${styles.logoutBtn}`}>
                 Logout
               </button>
@@ -69,4 +75,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default Navigation; //
